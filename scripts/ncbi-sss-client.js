@@ -180,6 +180,7 @@ function getSubmitRequest(seq) {
     if(argv.alignments !== undefined) r.ALIGNMENTS = argv.alignments;
     if(argv.word_size !== undefined) r.WORD_SIZE = argv.word_size;
     if(argv.filter !== undefined) r.FILTER = argv.filter;
+    if(argv.gapcosts !== undefined) r.GAPCOSTS = argv.gapcosts;
     
     var data = querystring.stringify(r);
 
