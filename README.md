@@ -45,6 +45,9 @@ your results, and select subsets easily for further analysis.
   then use `blast_formatter` to generate the outputs you normally read
   and the json output for indexing
 
+* This project also hosts a client script for NCBI BLAST service,
+  `ncbi-sss-client.js`. Node,js modules required by this script can be installed
+  by running `npm install` from project root folder
 
 ## License
 
