@@ -1,0 +1,378 @@
+{
+	"BlastOutput2": [
+		{
+			"report": {
+				"program": "blastp",
+				"version": "BLASTP 2.5.0+",
+				"reference": "Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), \"Gapped BLAST and PSI-BLAST: a new generation of protein database search programs\", Nucleic Acids Res. 25:3389-3402.",
+				"search_target": {
+					"db": "env_nr"
+				},
+				"params": {
+					"matrix": "BLOSUM62",
+					"expect": 1,
+					"gap_open": 11,
+					"gap_extend": 2,
+					"filter": "L;",
+					"cbs": 2
+				},
+				"results": {
+					"search": {
+						"query_id": "P05067.3",
+						"query_title": "RecName: Full=Amyloid beta A4 protein; AltName: Full=ABPP; AltName: Full=APPI; Short=APP; AltName: Full=Alzheimer disease amyloid protein; AltName: Full=Amyloid precursor protein; AltName: Full=Beta-amyloid precursor protein; AltName: Full=Cerebral vascular amyloid peptide; Short=CVAP; AltName: Full=PreA4; AltName: Full=Protease nexin-II; Short=PN-II; Contains: RecName: Full=N-APP; Contains: RecName: Full=Soluble APP-alpha; Short=S-APP-alpha; Contains: RecName: Full=Soluble APP-beta; Short=S-APP-beta; Contains: RecName: Full=C99; Contains: RecName: Full=Beta-amyloid protein 42; AltName: Full=Beta-APP42; Contains: RecName: Full=Beta-amyloid protein 40; AltName: Full=Beta-APP40; Contains: RecName: Full=C83; Contains: RecName: Full=P3(42); Contains: RecName: Full=P3(40); Contains: RecName: Full=C80; Contains: RecName: Full=Gamma-secretase C-terminal fragment 59; AltName: Full=Amyloid intracellular domain 59; Short=AICD-59; Short=AID(59); AltName: Full=Gamma-CTF(59); Contains: RecName: Full=Gamma-secretase C-terminal fragment 57; AltName: Full=Amyloid intracellular domain 57; Short=AICD-57; Short=AID(57); AltName: Full=Gamma-CTF(57); Contains: RecName: Full=Gamma-secretase C-terminal fragment 50; AltName: Full=Amyloid intracellular domain 50; Short=AICD-50; Short=AID(50); AltName: Full=Gamma-CTF(50); Contains: RecName: Full=C31; Flags: Precursor",
+						"query_len": 770,
+						"query_masking": [
+							{
+								"from": 1,
+								"to": 17
+							},
+							{
+								"from": 189,
+								"to": 207
+							},
+							{
+								"from": 221,
+								"to": 289
+							},
+							{
+								"from": 705,
+								"to": 722
+							}
+						],
+						"hits": [
+							{
+								"num": 1,
+								"description": [
+									{
+										"id": "gi|141196395|gb|ECQ28574.1|",
+										"accession": "ECQ28574",
+										"title": "hypothetical protein GOS_6261074, partial [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 196,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 74.3075,
+										"score": 165,
+										"evalue": 5.78344e-12,
+										"identity": 29,
+										"positive": 32,
+										"query_from": 291,
+										"query_to": 342,
+										"hit_from": 96,
+										"hit_to": 147,
+										"align_len": 52,
+										"gaps": 0,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCG",
+										"hseq": "CMAPAVTGRCRARIDRIAFDVEKRACVPFVYGGCGGNDNNFLSREKCLETCG",
+										"midline": "C   A TG CRA I R  FDV +  C PF YGGCGGN NNF + E C+  CG"
+									}
+								]
+							},
+							{
+								"num": 2,
+								"description": [
+									{
+										"id": "gi|143621792|gb|EDF90866.1|",
+										"accession": "EDF90866",
+										"title": "hypothetical protein GOS_873600 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 93,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 61.8816,
+										"score": 136,
+										"evalue": 4.36891e-9,
+										"identity": 24,
+										"positive": 32,
+										"query_from": 291,
+										"query_to": 342,
+										"hit_from": 43,
+										"hit_to": 93,
+										"align_len": 52,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCG",
+										"hseq": "CELKPDSGPCRAAIPRFYFDQKTQQCKQFFWGGCNGTA-PFETMKECMNACG",
+										"midline": "C  + ++GPCRA I R+YFD    +C  FF+GGC G    F+T + CM  CG"
+									}
+								]
+							},
+							{
+								"num": 3,
+								"description": [
+									{
+										"id": "gi|141366125|gb|ECR32316.1|",
+										"accession": "ECR32316",
+										"title": "hypothetical protein GOS_5646264 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 74,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 54.5974,
+										"score": 119,
+										"evalue": 7.99718e-7,
+										"identity": 19,
+										"positive": 24,
+										"query_from": 306,
+										"query_to": 341,
+										"hit_from": 13,
+										"hit_to": 48,
+										"align_len": 36,
+										"gaps": 0,
+										"qseq": "RWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVC",
+										"hseq": "RYYFDSGDGTCKQFYFGGCEGNDNNFRTLETCQSRC",
+										"midline": "R+YFD  +G C  F++GGC GN NNF T E C + C"
+									}
+								]
+							},
+							{
+								"num": 4,
+								"description": [
+									{
+										"id": "gi|135353250|gb|EBH06743.1|",
+										"accession": "EBH06743",
+										"title": "hypothetical protein GOS_9326178, partial [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 92,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 52.8835,
+										"score": 115,
+										"evalue": 0.00000685292,
+										"identity": 22,
+										"positive": 28,
+										"query_from": 291,
+										"query_to": 341,
+										"hit_from": 42,
+										"hit_to": 91,
+										"align_len": 51,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVC",
+										"hseq": "CELKPDPGPCRAWIPKYYFDQKTQKCKEFGWGGCRGTV-PFETLNECMNAC",
+										"midline": "C  + + GPCRA I ++YFD    KC  F +GGC G    F+T   CM  C"
+									}
+								]
+							},
+							{
+								"num": 5,
+								"description": [
+									{
+										"id": "gi|142013661|gb|ECU83673.1|",
+										"accession": "ECU83673",
+										"title": "hypothetical protein GOS_3011546, partial [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 132,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 53.7404,
+										"score": 117,
+										"evalue": 0.00000999969,
+										"identity": 21,
+										"positive": 28,
+										"query_from": 291,
+										"query_to": 341,
+										"hit_from": 82,
+										"hit_to": 131,
+										"align_len": 51,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVC",
+										"hseq": "CELKPDTGPCRAAIPKYYFDQKSKECKEFIWGGCNGTV-PFNTLSECKDAC",
+										"midline": "C  + +TGPCRA I ++YFD    +C  F +GGC G    F+T   C   C"
+									}
+								]
+							},
+							{
+								"num": 6,
+								"description": [
+									{
+										"id": "gi|134431857|gb|EBB31308.1|",
+										"accession": "EBB31308",
+										"title": "hypothetical protein GOS_254648 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 91,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 49.8841,
+										"score": 108,
+										"evalue": 0.0000526829,
+										"identity": 20,
+										"positive": 30,
+										"query_from": 291,
+										"query_to": 344,
+										"hit_from": 39,
+										"hit_to": 91,
+										"align_len": 54,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA",
+										"hseq": "CYLSPERGPCKAMLPRYFYNSESGQCEEFIWGGCDG-VVPFVTMEECQKGCSNS",
+										"midline": "C    E GPC+AM+ R++++   G+C  F +GGC G    F T E C   C ++"
+									}
+								]
+							},
+							{
+								"num": 7,
+								"description": [
+									{
+										"id": "gi|137069494|gb|EBS03455.1|",
+										"accession": "EBS03455",
+										"title": "hypothetical protein GOS_7501621 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 84,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 49.4556,
+										"score": 107,
+										"evalue": 0.0000770463,
+										"identity": 22,
+										"positive": 28,
+										"query_from": 291,
+										"query_to": 337,
+										"hit_from": 32,
+										"hit_to": 77,
+										"align_len": 47,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYC",
+										"hseq": "CNLKPERGFCKAAIPKYYFNHKTGKCEQFTYGGCKG-VVPFDTMEEC",
+										"midline": "C+ + E G C+A I ++YF+   GKC  F YGGC G    FDT E C"
+									}
+								]
+							},
+							{
+								"num": 8,
+								"description": [
+									{
+										"id": "gi|134345230|gb|EBA78670.1|",
+										"accession": "EBA78670",
+										"title": "hypothetical protein GOS_342353 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 128,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 49.0272,
+										"score": 106,
+										"evalue": 0.000299367,
+										"identity": 21,
+										"positive": 28,
+										"query_from": 291,
+										"query_to": 343,
+										"hit_from": 77,
+										"hit_to": 128,
+										"align_len": 53,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGS",
+										"hseq": "CYLTPDPGLCMAAFPRYYYDSDAGQCKEFIWGGCGG-VVPFETMEDCKQGCGN",
+										"midline": "C    + G C A   R+Y+D   G+C  F +GGCGG    F+T E C   CG+"
+									}
+								]
+							},
+							{
+								"num": 9,
+								"description": [
+									{
+										"id": "gi|137619005|gb|EBV08715.1|",
+										"accession": "EBV08715",
+										"title": "hypothetical protein GOS_6958409 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 95,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 48.1702,
+										"score": 104,
+										"evalue": 0.000312719,
+										"identity": 21,
+										"positive": 28,
+										"query_from": 291,
+										"query_to": 337,
+										"hit_from": 40,
+										"hit_to": 85,
+										"align_len": 47,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYC",
+										"hseq": "CDLTPESGPCEAVIEKYFFDSEDQVCKPFIWGGCEGTV-PFDTIEEC",
+										"midline": "C    E+GPC A+I +++FD  +  C PF +GGC G    FDT E C"
+									}
+								]
+							},
+							{
+								"num": 10,
+								"description": [
+									{
+										"id": "gi|134676381|gb|EBC76123.1|",
+										"accession": "EBC76123",
+										"title": "hypothetical protein GOS_18303 [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 92,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 44.7424,
+										"score": 96,
+										"evalue": 0.00343966,
+										"identity": 18,
+										"positive": 29,
+										"query_from": 291,
+										"query_to": 343,
+										"hit_from": 40,
+										"hit_to": 91,
+										"align_len": 53,
+										"gaps": 1,
+										"qseq": "CSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGS",
+										"hseq": "CTLKPDPGNCKASFPKYYYDQEDNMCKEFIWGGCGGTV-PFDSMKECKACVES",
+										"midline": "C+ + + G C+A   ++Y+D  +  C  F +GGCGG    FD+ + C A   S"
+									}
+								]
+							}
+						],
+						"stat": {
+							"db_num": 6907607,
+							"db_len": 1368973499,
+							"hsp_len": 80,
+							"eff_space": 563291807910,
+							"kappa": 0.082,
+							"lambda": 0.297,
+							"entropy": 0.27
+						}
+					}
+				}
+			}
+		}
+	]
+}

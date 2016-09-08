@@ -1,0 +1,94 @@
+{
+	"BlastOutput2": [
+		{
+			"report": {
+				"program": "blastp",
+				"version": "BLASTP 2.5.0+",
+				"reference": "Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), \"Gapped BLAST and PSI-BLAST: a new generation of protein database search programs\", Nucleic Acids Res. 25:3389-3402.",
+				"search_target": {
+					"db": "env_nr"
+				},
+				"params": {
+					"matrix": "BLOSUM62",
+					"expect": 1,
+					"gap_open": 11,
+					"gap_extend": 2,
+					"filter": "L;",
+					"cbs": 2
+				},
+				"results": {
+					"search": {
+						"query_id": "P10636.5",
+						"query_title": "RecName: Full=Microtubule-associated protein tau; AltName: Full=Neurofibrillary tangle protein; AltName: Full=Paired helical filament-tau; Short=PHF-tau",
+						"query_len": 758,
+						"query_masking": [
+							{
+								"from": 215,
+								"to": 225
+							},
+							{
+								"from": 322,
+								"to": 339
+							},
+							{
+								"from": 379,
+								"to": 402
+							},
+							{
+								"from": 441,
+								"to": 452
+							},
+							{
+								"from": 488,
+								"to": 539
+							}
+						],
+						"hits": [
+							{
+								"num": 1,
+								"description": [
+									{
+										"id": "gi|136533116|gb|EBO77661.1|",
+										"accession": "EBO77661",
+										"title": "hypothetical protein GOS_8022303, partial [marine metagenome]",
+										"taxid": 408172,
+										"sciname": "marine metagenome"
+									}
+								],
+								"len": 471,
+								"hsps": [
+									{
+										"num": 1,
+										"bit_score": 40.4575,
+										"score": 86,
+										"evalue": 0.553018,
+										"identity": 25,
+										"positive": 40,
+										"query_from": 639,
+										"query_to": 708,
+										"hit_from": 79,
+										"hit_to": 155,
+										"align_len": 77,
+										"gaps": 7,
+										"qseq": "CGSLGNIHHKP--GGGQVEVKSEKLDFKDRVQSKIGSLDNITHVPG---GGNKKIETHKLT--FRENAKAKTDHGAE",
+										"hseq": "AASLGQVHRAVIRGGREVAVKIQRPDIRDRVLKDLGTLDDIAAVFDRFTGPGRNVDTARLLQEFRRSLMLELDYREE",
+										"midline": "  SLG +H     GG +V VK ++ D +DRV   +G+LD+I  V     G  + ++T +L   FR +   + D+  E"
+									}
+								]
+							}
+						],
+						"stat": {
+							"db_num": 6907607,
+							"db_len": 1368973499,
+							"hsp_len": 80,
+							"eff_space": 553495428642,
+							"kappa": 0.082,
+							"lambda": 0.297,
+							"entropy": 0.27
+						}
+					}
+				}
+			}
+		}
+	]
+}
