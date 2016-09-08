@@ -20,7 +20,9 @@ your results, and select subsets easily for further analysis.
 
 ### How do I get set up? ###
 
-* Install Elasticsearch or have a cloud provided service (e.g. see Red Hat Cloud services)
+* Install Elasticsearch or have a cloud provided service (e.g. see Red Hat Cloud services).
+  If you are new to Elasticsearch you may find Elasticsearch kopf plugin useful to understand
+  and admin your server, https://github.com/lmenezes/elasticsearch-kopf
 
 * Clone this repository
 
@@ -37,6 +39,10 @@ your results, and select subsets easily for further analysis.
 
 * If you already have outputs in BLAST archive format you can use
   `blast_formatter` command to regenerate your outputs in json format
+
+* After you indexed your BLAST results you can install the HSPs-db web interface
+  we are working on for querying and visualizing indexed BLAST results,
+  https://github.com/uludag/hspsdb-webcode
 
 * We want to have scripts that maps existing XML outputs to json format
   but this has not been done yet
