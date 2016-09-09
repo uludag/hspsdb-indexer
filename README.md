@@ -1,53 +1,43 @@
-# HSPs-db
+# HSPs-db indexer
 
-HSPs-db project aims developing tools for indexing NCBI BLAST
-search results, together with data mining interfaces.
+This repository includes small set of scripts for indexing NCBI BLAST sequence
+similarity search output files using Elasticsearch.
 
-Everyday researchers all over the world run millions of NCBI BLAST sequence
-similarity searches; aim here is to prepare tools to make more sense of these
-search results.
-Latest version of the NCBI-BLAST software have improved outputs (xml2 project)
-which makes our task easier.
 
-We use Elasticsearch for indexing and storing BLAST results.
-We have open eye for Solr and Mongodb.
-         
-### What is this repository for? ###
+### Installation ###
 
-You run many NCBI-BLAST searches and want to be able to query all your results
-from a data-mining web interface that should allow you see the correlations across
-your results, and select subsets easily for further analysis.
-
-### How do I get set up? ###
-
-* Install Elasticsearch or have a cloud provided service (e.g. see Red Hat Cloud services).
-  If you are new to Elasticsearch you may find Elasticsearch kopf plugin useful to understand
-  and admin your server, https://github.com/lmenezes/elasticsearch-kopf
+* Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch).
+  If you are new to Elasticsearch you may find Elasticsearch [kopf]
+  (https://github.com/lmenezes/elasticsearch-kopf) plugin useful
+  to understand and admin your server
 
 * Clone this repository
 
-* Choose an Elasticsearch index name for your BLAST results and use `init-index.sh` script, in
-  scripts folder to initialize your index
+* Choose an Elasticsearch index name for your BLAST results
+  and use [init-index.sh](blob/master/scripts/index-init.sh)
+  script to initialize your index
 
-* If you already have your BLAST outputs in json format use `index.sh`
-  or `index-folder.sh` scripts we have to index your results
+* If you already have your BLAST outputs in json format use [index.sh]
+  (blob/master/scripts/index.sh)
+  or [index-folder.sh](blob/master/scripts/index-folder.sh) scripts
+  to index your output files
 
-* If you do not have any BLAST results in json format and if you first want to
+  If you do not have any BLAST results in json format and if you first want to
   see how HSPs-db is working then you can use the sample results we
-  have in the testdb folder. Call `index-folder.sh` script with argument `./testdb`
-  followed by the index name you choose earlier, and URL of your Elasticsearch server 
+  have in the testdb folder. Call [index-folder.sh]
+  (blob/master/scripts/index-folder.sh) script with argument `./testdb`
+  followed by the index name you choose earlier, and URL of your Elasticsearch server
 
-* If you already have outputs in BLAST archive format you can use
-  `blast_formatter` command to regenerate your outputs in json format
-
-* After you indexed your BLAST results you can install the HSPs-db web interface
-  we are working on for querying and visualizing indexed BLAST results,
-  https://github.com/uludag/hspsdb-webcode
-
-* We want to have scripts that maps existing XML outputs to json format
+  If you already have outputs in BLAST archive format you can use
+  `blast_formatter` command to regenerate your outputs in json format.
+  We want to implement scripts that maps existing XML outputs to json format
   but this has not been done yet
 
-* For your new BLAST searches it is best to produce outputs first in BLAST archive format
+* After you indexed your BLAST results you can install [HSPs-db web interface]
+  (https://github.com/uludag/hspsdb-webcode)
+  for querying and visualizing indexed BLAST results
+
+* For new BLAST searches it is best to produce outputs first in BLAST archive format
   then use `blast_formatter` to generate the outputs you normally read
   and the json output for indexing
 
