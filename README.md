@@ -14,18 +14,18 @@ similarity search output files using Elasticsearch.
 * Clone this repository
 
 * Choose an Elasticsearch index name for your BLAST results
-  and use [init-index.sh](blob/master/scripts/index-init.sh)
+  and use [init-index.sh](scripts/init-index.sh)
   script to initialize your index
 
 * If you already have your BLAST outputs in json format use [index.sh]
-  (blob/master/scripts/index.sh)
-  or [index-folder.sh](blob/master/scripts/index-folder.sh) scripts
+  (scripts/index.sh)
+  or [index-folder.sh](scripts/index-folder.sh) scripts
   to index your output files
 
   If you do not have any BLAST results in json format and if you first want to
   see how HSPs-db is working then you can use the sample results we
   have in the testdb folder. Call [index-folder.sh]
-  (blob/master/scripts/index-folder.sh) script with argument `./testdb`
+  (scripts/index-folder.sh) script with argument `./testdb`
   followed by the index name you choose earlier, and URL of your Elasticsearch server
 
   If you already have outputs in BLAST archive format you can use
