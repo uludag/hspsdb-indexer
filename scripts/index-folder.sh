@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Index BLAST json output files in given folder"
+# Index BLAST json output files in a given folder
 #
 # Example usage:
 # ./scripts/index-folder.sh ./testdb project-a http://localhost:9200/

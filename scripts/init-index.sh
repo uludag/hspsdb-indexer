@@ -1,16 +1,14 @@
 #!/bin/bash
-
-# Initialize Elasticsearch index with given name
-# for indexing/storing BLAST results
+# Initialize Elasticsearch index with given name for indexing BLAST results
 # Example usage:
 # ./scripts/init-index.sh project-a http://localhost:9200/
-
 
 type=xml2;
 index=${1-'hspsdb-test'}
 server=${2-'http://localhost:9200'}
 
-echo "Deleting existing index with same name, ignore index_not_found_exception";
+echo "Deleting existing index with given name, ignore index_not_found_exception";
+echo
 curl -XDELETE "${server}/${index}/";
 curl -XGET "${server}/${index}/_refresh";
 echo;echo;
