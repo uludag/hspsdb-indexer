@@ -1,0 +1,98 @@
+{
+  "sam": {
+    "properties": {
+      "SAM": {
+        "properties": {
+          "secondOfPairFlag": {
+            "type": "boolean"
+          },
+          "readName": {
+            "type": "string"
+          },
+          "baseQualities": {
+            "type": "string",
+            "index": "no"
+          },
+          "cigarString": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "flags": {
+            "type": "long"
+          },
+          "mateNegativeStrandFlag": {
+            "type": "boolean"
+          },
+          "readNegativeStrandFlag": {
+            "type": "boolean"
+          },
+          "readBases": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "inferredInsertSize": {
+            "type": "long"
+          },
+          "properPairFlag": {
+            "type": "boolean"
+          },
+          "baseQualityString": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "mappingQuality": {
+            "type": "long"
+          },
+          "validationStringency": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "cigar": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "alignmentStart": {
+            "type": "long"
+          },
+          "duplicateReadFlag": {
+            "type": "boolean"
+          },
+          "referenceName": {
+            "type": "string"
+          },
+          "mateUnmappedFlag": {
+            "type": "boolean"
+          },
+          "readFailsVendorQualityCheckFlag": {
+            "type": "boolean"
+          },
+          "readPairedFlag": {
+            "type": "boolean"
+          },
+          "firstOfPairFlag": {
+            "type": "boolean"
+          },
+          "readUnmappedFlag": {
+            "type": "boolean"
+          },
+          "readString": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "notPrimaryAlignmentFlag": {
+            "type": "boolean"
+          },
+          "mateAlignmentStart": {
+            "type": "long"
+          },
+          "supplementaryAlignmentFlag": {
+            "type": "boolean"
+          },
+          "mateReferenceName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

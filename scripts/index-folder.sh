@@ -17,17 +17,21 @@ function index() {
     curl -XGET "${server}/${index}/_refresh";
 }
 
+if [ $# -lt 1 ]
+then
+    echo "Usage:  $0 <json files folder> <index name> [server url]"
+else
+    i=0;
+    for infile in `ls ${infolder}/*.json`; do
+    id=$(basename "$infile" .json)
+    echo ${id}
+    index $infile $id
+    i=$((i + 1));
+    done
 
-i=0;
-for infile in `ls ${infolder}/*.json`; do
-   id=$(basename "$infile" .json)
-   echo ${id}
-   index $infile $id
-   i=$((i + 1));
-done
+    echo;
+    curl -XGET "${server}/${index}/_refresh";
+    echo $?;
 
-echo;
-curl -XGET "${server}/${index}/_refresh";
-echo $?;
-
-echo "${i} files have been indexed"
+    echo "${i} files have been indexed"
+fi
