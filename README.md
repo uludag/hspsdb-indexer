@@ -2,7 +2,7 @@
 
 This repository includes small set of scripts for indexing NCBI BLAST sequence
 similarity search output files using Elasticsearch.
-
+[ ![Codeship Status for uludag/hspsdb-indexer](https://app.codeship.com/projects/1a5a9020-4dd9-0134-d04d-069048840640/status?branch=master)](https://app.codeship.com/projects/170651)
 
 ### Installation ###
 
