@@ -1,7 +1,12 @@
 # HSPs-db indexer
 
-This repository includes small set of scripts for indexing NCBI BLAST sequence
-similarity search output files using Elasticsearch.
+This repository hosts a small set of scripts and a small Java project
+for Elasticsearch indexing of NCBI BLAST sequence similarity search
+results, in json and SAM formats.
+We have started working on SAM output files only recently;
+we do not yet have web interface support for the indexed SAM outputs as we have
+for the indexed json outputs, https://github.com/uludag/hspsdb-webcode.
+
 [ ![Codeship Status for uludag/hspsdb-indexer](https://app.codeship.com/projects/1a5a9020-4dd9-0134-d04d-069048840640/status?branch=master)](https://app.codeship.com/projects/170651)
 
 ### Installation ###
