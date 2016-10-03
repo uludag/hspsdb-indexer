@@ -60,24 +60,19 @@ public class SAMFileIndexer {
         CloserUtil.close(reader);
         return i;
     }
-
-
+    
     public static String toJson_jsonj(SAMRecord r) throws JAXBException {
         JsonObject o = object(
                 field("alignmentStart", r.getAlignmentStart()),
                 field("cigarString", r.getCigarString()),
                 field("duplicateReadFlag", r.getDuplicateReadFlag()),
-                field("firstOfPairFlag", r.getFirstOfPairFlag()),
                 field("flags", r.getFlags()),
                 field("inferredInsertSize", r.getInferredInsertSize()),
                 field("mappingQuality", r.getMappingQuality()),
                 field("mateAlignmentStart", r.getMateAlignmentStart()),
-                field("mateNegativeStrandFlag", r.getMateNegativeStrandFlag()),
                 field("mateReferenceIndex", r.getMateReferenceIndex()),
                 field("mateReferenceName", r.getMateReferenceName()),
-                field("mateUnmappedFlag", r.getMateUnmappedFlag()),
                 field("notPrimaryAlignmentFlag", r.getNotPrimaryAlignmentFlag()),
-                field("properPairFlag", r.getProperPairFlag()),
                 field("readFailsVendorQualityCheckFlag",
                         r.getReadFailsVendorQualityCheckFlag()),
                 field("readName", r.getReadName()),
@@ -86,12 +81,22 @@ public class SAMFileIndexer {
                 field("readPairedFlag", r.getReadPairedFlag()),
                 field("readUnmappedFlag", r.getReadUnmappedFlag())
         );
-
+        
+        try{
+            o.put("firstOfPairFlag", r.getFirstOfPairFlag());
+            o.put("mateNegativeStrandFlag", r.getMateNegativeStrandFlag());
+            o.put("mateUnmappedFlag", r.getMateUnmappedFlag());
+            o.put("properPairFlag", r.getProperPairFlag());
+        } catch (IllegalStateException e)
+        {
+            LOG.debug(e.getMessage());
+        }
+        
         String result = JsonSerializer.serialize(o);
         LOG.debug(result);
         return result;
     }
-
+    
 
     public static void main(String[] a) throws IndexerException, JAXBException,
             IOException {

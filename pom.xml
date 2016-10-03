@@ -6,7 +6,7 @@
     <groupId>sa.edu.kaust</groupId>
     <artifactId>hspsdb-indexer</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>hspsdb-indexer-java</name>
+    <name>hspsdb-indexer</name>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -3,7 +3,6 @@
 # Example usage:
 # ./scripts/init-index.sh project-a http://localhost:9200/
 
-type=xml2;
 index=${1-'hspsdb-test'}
 server=${2-'http://localhost:9200'}
 
@@ -22,9 +21,12 @@ curl -XPUT "${server}/${index}/" -d '
 }';
 
 echo;echo;
-
+type=xml2;
 curl -XPUT "${server}/${index}/_mapping/${type}"\
  -d  @./scripts/mappings.json;
+type=sam;
+curl -XPUT "${server}/${index}/_mapping/${type}"\
+ -d  @./scripts/mappings-sam.json;
 
 echo;echo;
 curl -XGET "${server}/${index}/_refresh";

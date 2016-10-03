@@ -9,13 +9,26 @@ import java.io.Reader;
 import java.util.Properties;
 import javax.xml.bind.JAXBException;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 
 public class SAMFileIndexerTest {
-    private static final String TEST_DATA_DIR
-            = "src/test/resources/htsjdk/samtools/";
+    String server, index;
 
+    /**
+     * Read Elasticsearch test server and name of the index
+     */
+    @BeforeClass
+    final void readTestServerSettings() throws IOException {
+        String config = "./src/test/resources/hspsdb-tests.properties";
+        Properties p = new Properties();
+        Reader reader = new FileReader(config);
+        p.load(reader);
+                server = p.getProperty("server");
+        index= p.getProperty("index");
+    }
+    
     @DataProvider(name = "htsjdkTestCases")
-    public Object[][] variousFormatReaderTestCases() {
+    public Object[][] htsjdkTestCases() {
         final Object[][] scenarios = new Object[][]{
             {"block_compressed.sam.gz"},
             {"uncompressed.sam"},
@@ -25,26 +38,30 @@ public class SAMFileIndexerTest {
         return scenarios;
     }
 
-
     @Test(dataProvider = "htsjdkTestCases")
-    public void samRecordFactoryTest(final String inputFile)
+    public void htsjdkTest(final String inputFile)
             throws JAXBException, IOException, IndexerException {
-        Properties p = getHspsdbTestServer();
-        String server = p.getProperty("server");
-        String index= p.getProperty("index");
-
+        String DIR = "src/test/resources/htsjdk/samtools/";
         SAMFileIndexer r = new SAMFileIndexer(server);
-        int i = r.index(TEST_DATA_DIR + inputFile, index);
+        int i = r.index(DIR + inputFile, index);
+        Assert.assertTrue(i > 0);
+    }
+    
+    @DataProvider(name = "Magic-BLAST-TestCases")
+    public Object[][] magicBLAST_TestCases() {
+        final Object[][] scenarios = new Object[][]{
+            {"ex-mbsearch-h38.sam"}
+        };
+        return scenarios;
+    }
+
+    //@Test(dataProvider = "Magic-BLAST-TestCases")
+    public void magicBLAST_Test(final String inputFile)
+            throws JAXBException, IOException, IndexerException {
+        String DIR = "src/test/resources/mbsearch/";
+        SAMFileIndexer r = new SAMFileIndexer(server);
+        int i = r.index(DIR + inputFile, index);
         Assert.assertTrue(i > 0);
     }
 
-
-    static private Properties getHspsdbTestServer()
-            throws IOException{
-        String config = "./src/test/resources/hspsdb-tests.properties";
-        Properties p = new Properties();
-        Reader reader = new FileReader(config);
-        p.load(reader);
-        return p;
-    }
 }
