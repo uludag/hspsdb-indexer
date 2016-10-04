@@ -13,8 +13,8 @@ for the indexed json outputs, https://github.com/uludag/hspsdb-webcode.
 ### Installation ###
 
 * Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch).
-  If you are new to Elasticsearch you may find Elasticsearch [kopf]
-  (https://github.com/lmenezes/elasticsearch-kopf) plugin useful
+  If you are new to Elasticsearch you may find Elasticsearch
+  [kopf](https://github.com/lmenezes/elasticsearch-kopf) plugin useful
   to understand and admin your server
 
 * Clone this repository
@@ -40,8 +40,8 @@ for the indexed json outputs, https://github.com/uludag/hspsdb-webcode.
   We want to implement scripts that maps existing XML outputs to json format
   but this has not been done yet
 
-* After you indexed your BLAST results you can install [HSPs-db web interface]
-  (https://github.com/uludag/hspsdb-webcode)
+* After you indexed your BLAST results you can install
+ [HSPs-db web interface](https://github.com/uludag/hspsdb-webcode)
   for querying and visualizing indexed BLAST results
 
 * For new BLAST searches it is best to produce outputs first in BLAST archive format
