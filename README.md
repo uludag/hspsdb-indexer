@@ -1,6 +1,6 @@
 # HSPs-db indexer
 
-This repository hosts a small set of scripts and a small Java project
+This repository hosts scripts and a Java project
 for Elasticsearch indexing of NCBI BLAST sequence similarity search
 results, in json and SAM formats.
 We have started working on SAM output files only recently;
