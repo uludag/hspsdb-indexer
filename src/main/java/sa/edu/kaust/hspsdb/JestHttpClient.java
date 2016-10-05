@@ -47,18 +47,18 @@ public class JestHttpClient implements IndexerClient
         }
     }
 
-    
+
     @Override
-    public int indexb(String index, String type, Collection<String> source,
-            String idprefix, int i) 
+    public long indexb(String index, String type, Collection<String> source,
+            String idprefix, long i)
             throws IOException, IndexerException
     {
         Bulk.Builder b = new Bulk.Builder();
         b.defaultIndex(index).defaultType(type);
         for(Object obj: source)
-            b.addAction(new Index.Builder(obj).id(idprefix + (i++)).build());
+            b.addAction(new Index.Builder(obj).id(idprefix + (++i)).build());
         Bulk index_ = b.build();
-        
+
         BulkResult r = client.execute(index_);
         if(r.isSucceeded()==false)
         {
@@ -76,8 +76,9 @@ public class JestHttpClient implements IndexerClient
     }
 
 
-    //@Override
-    public void delete(String index, String type, String id) throws IndexerException
+    @Override
+    public void delete(String index, String type, String id)
+            throws IndexerException
     {
         try {
             client.execute(new Delete.Builder(id)
@@ -90,7 +91,7 @@ public class JestHttpClient implements IndexerClient
         }
     }
 
-    
+
     @Override
     public void close()
     {

@@ -16,12 +16,26 @@ public interface IndexerClient
             
     public void optimize(String index) throws IndexerException;
 
+    public void delete(String index, String type, String id)
+            throws IndexerException;
+    
     public void deleteall(String collection) throws IndexerException;
     
     public void index(String index, String type, Object source, String id)
             throws IOException, IndexerException;
     
-    public int indexb(String index, String type, Collection<String> source,
-            String idprefix, int i) throws IOException, IndexerException;
+    /**
+     * Index given collection of docs using Elasticsearch batch API
+     * @param index name of the Elasticsearch index
+     * @param doctype type name for the documents
+     * @param docs documents to index
+     * @param idprefix prefix for document identifiers
+     * @param i number to append to document identifiers
+     * @return updated number with number of documents indexed
+     * @throws IOException
+     * @throws IndexerException 
+     */
+    public long indexb(String index, String doctype, Collection<String> docs,
+            String idprefix, long i) throws IOException, IndexerException;
 
 }

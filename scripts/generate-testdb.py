@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Generate sample outputs by submitting BLAST searches on NCBI servers
+# Generate sample outputs by submitting BLAST searches to NCBI servers
 # and index the results on the given Elasticsearch server.
 #
 # Set your email address and Elasticsearch server URL

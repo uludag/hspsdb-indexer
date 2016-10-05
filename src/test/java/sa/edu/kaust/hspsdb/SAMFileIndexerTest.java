@@ -26,7 +26,7 @@ public class SAMFileIndexerTest {
                 server = p.getProperty("server");
         index= p.getProperty("index");
     }
-    
+
     @DataProvider(name = "htsjdkTestCases")
     public Object[][] htsjdkTestCases() {
         final Object[][] scenarios = new Object[][]{
@@ -43,25 +43,25 @@ public class SAMFileIndexerTest {
             throws JAXBException, IOException, IndexerException {
         String DIR = "src/test/resources/htsjdk/samtools/";
         SAMFileIndexer r = new SAMFileIndexer(server);
-        int i = r.index(DIR + inputFile, index);
-        Assert.assertTrue(i > 0);
+        long n = r.index(DIR + inputFile, index);
+        Assert.assertTrue(n > 0);
     }
-    
+
     @DataProvider(name = "Magic-BLAST-TestCases")
     public Object[][] magicBLAST_TestCases() {
         final Object[][] scenarios = new Object[][]{
-            {"ex-mbsearch-h38.sam"}
+            {"SRR317068-pairedfastq-search.sam", 10928}
         };
         return scenarios;
     }
 
-    //@Test(dataProvider = "Magic-BLAST-TestCases")
-    public void magicBLAST_Test(final String inputFile)
+    @Test(dataProvider = "Magic-BLAST-TestCases")
+    public void magicBLAST_Test(final String inputFile, long n_mappings)
             throws JAXBException, IOException, IndexerException {
         String DIR = "src/test/resources/mbsearch/";
         SAMFileIndexer r = new SAMFileIndexer(server);
-        int i = r.index(DIR + inputFile, index);
-        Assert.assertTrue(i > 0);
+        long n = r.index(DIR + inputFile, index);
+        System.out.println(n);
+        Assert.assertEquals(n, n_mappings);
     }
-
 }

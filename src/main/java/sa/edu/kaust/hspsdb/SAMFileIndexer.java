@@ -17,24 +17,26 @@ import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.tools.JsonSerializer;
+import htsjdk.samtools.SAMRecordFactory;
 
 public class SAMFileIndexer {
     static Logger LOG = LoggerFactory.getLogger(SAMFileIndexer.class);
     static IndexerClient client;
-    final DefaultSAMRecordFactory factory;
+    static int BATCH_SIZE = 1000;
+    final SAMRecordFactory factory;
 
     public SAMFileIndexer(String server) throws JAXBException, IndexerException {
         client = new JestHttpClient(server);
         factory = new DefaultSAMRecordFactory();
     }
 
-
-    public int index(String inputFile, String index)
+    
+    public long index(String inputFile, String index)
             throws JAXBException, IOException, IndexerException {
-        String type = "sam";
+        long n = 0; int j = 0;
+        String doctype = "sam";
+        LOG.info("Indexing {} to index {}", inputFile, index);
         Collection<String> s = new ArrayList<>();
-        int i = 0;
-        int j = 0;
         final File input = new File(inputFile);
         String id = input.getName();
         SamReaderFactory rf = SamReaderFactory.makeDefault();
@@ -42,23 +44,19 @@ public class SAMFileIndexer {
         final SamReader reader = rf.samRecordFactory(factory).open(input);
 
         for (final SAMRecord rec : reader) {
-            ++i;
             s.add(toJson_jsonj(rec));
-            if(++j == 100)
-            {
-                client.indexb(index, type, s, id, i);
+            if(++j == BATCH_SIZE) {
+                n = client.indexb(index, doctype, s, id, n);
                 s.clear();
                 j = 0;
             }
         }
-        if(j > 0)
-        {
-            client.indexb(index, type, s, id, i);
-            i += j;
-        }
+        if(j > 0) n = client.indexb(index, doctype, s, id, n);
+
         client.commit(index);
         CloserUtil.close(reader);
-        return i;
+        LOG.info("{} mappings has been indexed", n);
+        return n;
     }
     
     public static String toJson_jsonj(SAMRecord r) throws JAXBException {
