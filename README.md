@@ -5,7 +5,8 @@ for Elasticsearch indexing of NCBI BLAST sequence similarity search
 results, in json and SAM formats.
 We have started working on SAM output files only recently;
 we do not yet have web interface support for the indexed SAM outputs as we have
-for the indexed json outputs, https://github.com/uludag/hspsdb-webcode.
+for the indexed json outputs; https://github.com/uludag/hspsdb-webcode.
+You can see development version of the web interface from the [test server](http://hspsdb-test.herokuapp.com/) we have which is connected to an Elasticsearch server with a small set of sample BLAST results.
 
 [ ![Codeship Status for uludag/hspsdb-indexer]
 (https://app.codeship.com/projects/1a5a9020-4dd9-0134-d04d-069048840640/status?branch=master)](https://app.codeship.com/projects/170651)
@@ -23,18 +24,16 @@ for the indexed json outputs, https://github.com/uludag/hspsdb-webcode.
   and use [init-index.sh](scripts/init-index.sh)
   script to initialize your index
 
-* If you already have your BLAST outputs in json format use [index.sh]
-  (scripts/index.sh)
+* If you already have your BLAST outputs in json format use
+  [index.sh](scripts/index.sh)
   or [index-folder.sh](scripts/index-folder.sh) scripts
-  to index your output files
-
+  to index your output files.
   If you do not have any BLAST results in json format and if you first want to
-  see how HSPs-db is working then you can use the sample results we
-  have in the testdb folder. Call [index-folder.sh]
-  (scripts/index-folder.sh) script with argument `./testdb`
+  see how HSPs-db is working,
+  then you can use the sample results we have in the testdb folder.
+  Call [index-folder.sh](scripts/index-folder.sh) script with argument `./testdb`
   followed by the index name you choose earlier, and URL of your Elasticsearch
-  server
-
+  server.
   If you already have outputs in BLAST archive format you can use
   `blast_formatter` command to regenerate your outputs in json format.
   We want to implement scripts that maps existing XML outputs to json format
@@ -56,4 +55,6 @@ for the indexed json outputs, https://github.com/uludag/hspsdb-webcode.
 
 ## License
 
-Copyright (c) King Abdullah University of Science and Technology, Thuwal, SA
+Copyright (c)
+ [King Abdullah University of Science and Technology](https://www.kaust.edu.sa/),
+ Thuwal, SA
