@@ -11,8 +11,10 @@ import javax.xml.bind.JAXBException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 
+
 public class SAMFileIndexerTest {
     String server, index;
+    SAMFileIndexer indexer;
 
     /**
      * Read Elasticsearch test server and name of the index
@@ -23,8 +25,9 @@ public class SAMFileIndexerTest {
         Properties p = new Properties();
         Reader reader = new FileReader(config);
         p.load(reader);
-                server = p.getProperty("server");
+        server = p.getProperty("server");
         index= p.getProperty("index");
+        indexer = new SAMFileIndexer(server);
     }
 
     @DataProvider(name = "htsjdkTestCases")
@@ -42,8 +45,7 @@ public class SAMFileIndexerTest {
     public void htsjdkTest(final String inputFile)
             throws JAXBException, IOException, IndexerException {
         String DIR = "src/test/resources/htsjdk/samtools/";
-        SAMFileIndexer r = new SAMFileIndexer(server);
-        long n = r.index(DIR + inputFile, index);
+        long n = indexer.index(DIR + inputFile, index);
         Assert.assertTrue(n > 0);
     }
 
@@ -59,8 +61,7 @@ public class SAMFileIndexerTest {
     public void magicBLAST_Test(final String inputFile, long n_mappings)
             throws JAXBException, IOException, IndexerException {
         String DIR = "src/test/resources/mbsearch/";
-        SAMFileIndexer r = new SAMFileIndexer(server);
-        long n = r.index(DIR + inputFile, index);
+        long n = indexer.index(DIR + inputFile, index);
         System.out.println(n);
         Assert.assertEquals(n, n_mappings);
     }

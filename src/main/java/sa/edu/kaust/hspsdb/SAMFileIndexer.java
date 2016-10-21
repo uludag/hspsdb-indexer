@@ -25,7 +25,7 @@ public class SAMFileIndexer {
     static int BATCH_SIZE = 1000;
     final SAMRecordFactory factory;
 
-    public SAMFileIndexer(String server) throws JAXBException, IndexerException {
+    public SAMFileIndexer(String server) {
         client = new JestHttpClient(server);
         factory = new DefaultSAMRecordFactory();
     }
