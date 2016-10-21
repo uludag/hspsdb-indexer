@@ -13,7 +13,7 @@ else
 
     curl -XDELETE ${server}/${index}/xml2/${id};
 
-    curl -XGET "${server}/${index}/_refresh";
+    curl -XPOST "${server}/${index}/_refresh";
 
     echo
     echo "Delete call followed by refresh call, both returned"

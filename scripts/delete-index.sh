@@ -13,7 +13,7 @@ curl -XDELETE "${server}/${index}/";
 echo;echo;
 echo "Delete call returned now making refresh call, ignore index_not_found_exception";
 
-curl -XGET "${server}/${index}/_refresh";
+curl -XPOST "${server}/${index}/_refresh";
 
 echo;echo;
 echo "Refresh call returned";

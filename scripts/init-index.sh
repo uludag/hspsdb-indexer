@@ -3,13 +3,19 @@
 # Example usage:
 # ./scripts/init-index.sh project-a http://localhost:9200/
 
+if [ $# -lt 1 ]
+then
+    echo "Usage: $0 <index name for BLAST json output files>"\
+         " [Elasticsearch server url, default:http://localhost:9200/]"
+    exit;
+fi
+
 index=${1-'hspsdb-test'}
 server=${2-'http://localhost:9200'}
 
 echo "Deleting existing index with given name, ignore index_not_found_exception";
-echo
 curl -XDELETE "${server}/${index}/";
-curl -XGET "${server}/${index}/_refresh";
+curl -XPOST "${server}/${index}/_refresh";
 echo;echo;
 curl -XPUT "${server}/${index}/" -d '
 {
@@ -29,6 +35,6 @@ curl -XPUT "${server}/${index}/_mapping/${type}"\
  -d  @./scripts/mappings-sam.json;
 
 echo;echo;
-curl -XGET "${server}/${index}/_refresh";
+curl -XPOST "${server}/${index}/_refresh";
 
 echo;echo;

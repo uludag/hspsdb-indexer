@@ -7,6 +7,7 @@ server=${3-'http://localhost:9200'}
 function print_usage()
  {
     echo "Index given SAM sequence similarity search results file"
+    echo "Requires Java and Maven installed"
     echo ""
     echo "Usage:  $0 <samfile> [<index> [<server>]] "
     echo ""
@@ -22,11 +23,6 @@ mvn exec:java -Dexec.mainClass=sa.edu.kaust.hspsdb.SAMFileIndexer\
 
 echo;
 
-curl -XGET "${server}/${index}/_refresh";
+curl -XPOST "${server}/${index}/_refresh";
 
 echo $?;
-
-
-curl -XPUT ${server}/${index}/xml2/${id} -d @${infile};
-
-curl -XGET "${server}/${index}/_refresh";
