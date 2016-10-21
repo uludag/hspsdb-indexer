@@ -44,7 +44,7 @@ public class SAMFileIndexer {
         final SamReader reader = rf.samRecordFactory(factory).open(input);
 
         for (final SAMRecord rec : reader) {
-            s.add(toJson_jsonj(rec));
+            s.add(toJson_jsonj(rec, inputFile));
             if(++j == BATCH_SIZE) {
                 n = client.indexb(index, doctype, s, id, n);
                 s.clear();
@@ -59,8 +59,19 @@ public class SAMFileIndexer {
         return n;
     }
     
-    public static String toJson_jsonj(SAMRecord r) throws JAXBException {
+    /**
+     * Return json string representation of given SAM read r that can be used
+     * for Elasticsearch indexing. In order to distinguish reads from
+     * different files we use 'filename' as an additional field but this is
+     * likely to change in future.
+     * @param r       SAM read
+     * @param infile  input SAM file
+     * @return        json string representation of the read
+     */
+    public static String toJson_jsonj(SAMRecord r, String infile)
+            throws JAXBException {
         JsonObject o = object(
+                field("filename", infile),
                 field("alignmentStart", r.getAlignmentStart()),
                 field("cigarString", r.getCigarString()),
                 field("duplicateReadFlag", r.getDuplicateReadFlag()),
@@ -94,10 +105,19 @@ public class SAMFileIndexer {
         LOG.debug(result);
         return result;
     }
-    
 
+    
+    static String help = "Index given SAM file in specified Elasticsearch server\n"
+            + "To execute use the script index-sam.sh, in the ./scripts folder";
+
+    
     public static void main(String[] a) throws IndexerException, JAXBException,
             IOException {
+        if(a[0].equals("help") || a[0].equals("-help") || a[0].equals("--help"))
+        {
+            System.out.println(help);
+            System.exit(0);
+        }
         String infile = a[0];
         String index = a[1];
         String server = a[2];
