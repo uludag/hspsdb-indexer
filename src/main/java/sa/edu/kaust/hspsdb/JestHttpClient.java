@@ -23,8 +23,11 @@ public class JestHttpClient implements IndexerClient
     static Logger log = LoggerFactory.getLogger(JestHttpClient.class);
     JestClient client;
 
-    public JestHttpClient(String url)
+    public JestHttpClient(String url) throws IndexerException
     {
+        if (url == null || url.length()==0) throw new IndexerException(
+                "Elasticsearch server url is null");
+        log.info("new Elasticsearch client for " + url);
         JestClientFactory factory = new JestClientFactory();
         factory.setHttpClientConfig(new HttpClientConfig
                 .Builder(url)

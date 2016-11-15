@@ -20,13 +20,13 @@ public class SAMFileIndexerTest {
      * Read Elasticsearch test server and name of the index
      */
     @BeforeClass
-    final void readTestServerSettings() throws IOException {
+    final void readTestServerSettings() throws IOException, IndexerException {
         String config = "./src/test/resources/hspsdb-tests.properties";
         Properties p = new Properties();
         Reader reader = new FileReader(config);
         p.load(reader);
         server = p.getProperty("server");
-        index= p.getProperty("index");
+        index= p.getProperty("samfilesindex");
         indexer = new SAMFileIndexer(server);
     }
 
@@ -65,4 +65,6 @@ public class SAMFileIndexerTest {
         System.out.println(n);
         Assert.assertEquals(n, n_mappings);
     }
+    
+    //TODO: tests with diamond and bwa-meth
 }

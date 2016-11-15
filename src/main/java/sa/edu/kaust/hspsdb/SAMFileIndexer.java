@@ -1,5 +1,6 @@
 package sa.edu.kaust.hspsdb;
 
+import com.github.jsonj.JsonArray;
 import htsjdk.samtools.DefaultSAMRecordFactory;
 import htsjdk.samtools.SAMRecord;
 import htsjdk.samtools.SamReader;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import com.github.jsonj.JsonObject;
+import static com.github.jsonj.tools.JsonBuilder.array;
 import com.github.jsonj.tools.JsonSerializer;
+import htsjdk.samtools.SAMFileHeader;
 import htsjdk.samtools.SAMRecordFactory;
 
 public class SAMFileIndexer {
@@ -25,7 +28,7 @@ public class SAMFileIndexer {
     static int BATCH_SIZE = 1000;
     final SAMRecordFactory factory;
 
-    public SAMFileIndexer(String server) {
+    public SAMFileIndexer(String server) throws IndexerException {
         client = new JestHttpClient(server);
         factory = new DefaultSAMRecordFactory();
     }
@@ -42,7 +45,7 @@ public class SAMFileIndexer {
         SamReaderFactory rf = SamReaderFactory.makeDefault();
         rf.validationStringency(ValidationStringency.SILENT);
         final SamReader reader = rf.samRecordFactory(factory).open(input);
-
+        indexHeader(reader, inputFile, index);
         for (final SAMRecord rec : reader) {
             s.add(toJson_jsonj(rec, inputFile));
             if(++j == BATCH_SIZE) {
@@ -57,6 +60,31 @@ public class SAMFileIndexer {
         CloserUtil.close(reader);
         LOG.info("{} mappings has been indexed", n);
         return n;
+    }
+    
+    
+    void indexHeader(final SamReader reader, String inputFile, String index)
+            throws IOException, IndexerException, JAXBException {
+        SAMFileHeader h = reader.getFileHeader();
+        String r = header2Json_jsonj(h, inputFile);
+        client.index(index, "header", r, inputFile);
+    }
+    
+    public static String header2Json_jsonj(SAMFileHeader h, String infile)
+            throws JAXBException {
+        JsonArray pn = array();
+        h.getProgramRecords().forEach(r -> pn.add(r.getProgramName()));
+        JsonArray sn = array();
+        h.getSequenceDictionary().getSequences().forEach(r -> sn.add(r.getSequenceName()));
+        
+        JsonObject o = object(
+                field("CO", array(h.getComments())),
+                field("PN", pn),
+                field("SN", sn)
+                );
+        String result = JsonSerializer.serialize(o);
+        LOG.debug(result);
+        return result;
     }
     
     /**
