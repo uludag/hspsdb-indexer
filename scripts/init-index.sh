@@ -1,5 +1,7 @@
 #!/bin/bash
-# Initialize Elasticsearch index with given name for indexing BLAST results
+# Initialize Elasticsearch index with given name
+# for indexing sequence similarity search results
+# either in BLAST xml2 format or in widely used SAM format
 # Example usage:
 # ./scripts/init-index.sh project-a http://localhost:9200/
 
@@ -13,10 +15,13 @@ fi
 index=${1-'hspsdb-test'}
 server=${2-'http://localhost:9200'}
 
-echo "Deleting existing index with given name, ignore index_not_found_exception";
+echo "Deleting any existing index with name '${index}', ignore index_not_found_exception";
 curl -XDELETE "${server}/${index}/";
-curl -XPOST "${server}/${index}/_refresh";
-echo;echo;
+echo;
+echo "Refreshing indicies";
+curl -XPOST "${server}/_refresh";
+echo;
+echo "Initializing new index with name '${index}'";
 curl -XPUT "${server}/${index}/" -d '
 {
     "settings" : {
@@ -26,15 +31,25 @@ curl -XPUT "${server}/${index}/" -d '
     }
 }';
 
-echo;echo;
+es_5=`curl ${server} |& grep 'number" : "5' | wc -l`
+
+if [ "$es_5" = "1" ]; then
+    xml2mappings="./scripts/mappings-es5.json"
+else
+    xml2mappings="./scripts/mappings.json"
+fi
+
+echo;
+echo "Setting index type mappings";
 type=xml2;
 curl -XPUT "${server}/${index}/_mapping/${type}"\
- -d  @./scripts/mappings.json;
+ -d  @${xml2mappings};
 type=sam;
 curl -XPUT "${server}/${index}/_mapping/${type}"\
  -d  @./scripts/mappings-sam.json;
 
-echo;echo;
+echo;
+echo "Refreshing indicies";
 curl -XPOST "${server}/${index}/_refresh";
 
 echo;echo;

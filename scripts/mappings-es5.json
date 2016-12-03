@@ -1,0 +1,96 @@
+{
+  "properties":{
+    "BlastOutput2":{"type": "nested", "properties": {
+        "report":{"type": "nested","properties": {
+            "program": {
+              "type": "keyword"
+            },
+            "reference": {"type": "keyword", "doc_values": false},
+            "results": { "type": "nested", "properties": {
+                "search": { "type": "nested", "properties": {
+                    "query_id":
+                    {
+                      "type": "text",
+                      "fields": {
+                        "raw": {
+                          "type":  "keyword",
+                          "index": "not_analyzed"
+                        }
+                      }
+                    },
+                    "query_title":
+                    {
+                      "type": "text",
+                      "fields": {
+                        "raw": {
+                          "type":  "keyword",
+                          "index": "not_analyzed"
+                        }
+                      }
+                    },
+                    "hits": {"type": "nested", "properties": {
+                        "hsps": { "type": "nested", "properties": {
+                            "evalue":
+                            {
+                              "type": "double",
+                              "coerce": true
+                            },
+                            "hseq": {
+                              "type": "keyword"
+                            }    
+                          }},
+                        "description": {"properties": {
+                            "accession": {
+                              "type": "keyword"
+                            },
+                            "sciname":
+                            {
+                              "type": "text",
+                              "fields": {
+                                "raw": {
+                                  "type":  "keyword",
+                                  "index": "not_analyzed"
+                                }
+                              }
+                            },
+                            "id":
+                            {
+                              "type": "text",
+                              "fields": {
+                                "raw": {
+                                  "type":  "keyword",
+                                  "index": "not_analyzed"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "search_target":
+            {
+              "type": "nested",
+              "properties":
+              {
+                "db":
+                {
+                  "type": "text",
+                  "fields": {
+                    "raw": {
+                      "type":  "keyword",
+                      "index": "not_analyzed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
