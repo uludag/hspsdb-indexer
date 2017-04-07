@@ -1,7 +1,7 @@
 #!/bin/sh
-# Delete given BLAST result from given Elasticsearch index
+# Delete given BLAST result file from given Elasticsearch index
 # Example usage:
-# ./scripts/delete.sh search-1 project-a http://localhost:9200/
+# ./scripts/delete.sh search-1 index-a http://localhost:9200/
 
 if [ $# -lt 1 ]
 then

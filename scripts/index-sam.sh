@@ -16,13 +16,18 @@ function print_usage()
     echo ""
 }
 
-echo "${infile} ${index} ${server}"
+if [ $# -lt 1 ]
+then
+    print_usage;
+else
+    echo "${infile} ${index} ${server}"
 
-mvn exec:java -Dexec.mainClass=sa.edu.kaust.hspsdb.SAMFileIndexer\
- -Dexec.args="${infile} ${index} ${server}";
+    mvn exec:java -Dexec.mainClass=sa.edu.kaust.hspsdb.SAMFileIndexer\
+     -Dexec.args="${infile} ${index} ${server}";
 
-echo;
+    echo;
 
-curl -XPOST "${server}/${index}/_refresh";
+    curl -XPOST "${server}/${index}/_refresh";
 
-echo $?;
+    echo $?;
+fi
