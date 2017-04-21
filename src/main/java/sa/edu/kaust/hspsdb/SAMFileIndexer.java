@@ -88,10 +88,10 @@ public class SAMFileIndexer {
     }
     
     /**
-     * Return json string representation of given SAM read r that can be used
-     * for Elasticsearch indexing. In order to distinguish reads from
-     * different files we use 'filename' as an additional field but this is
-     * likely to change in future.
+     * Return json string representation of given SAM read that can be used
+     * for Elasticsearch indexing.
+     * In order to distinguish reads from different files we use 'filename'
+     * as an additional index field which is likely to change in future.
      * @param r       SAM read
      * @param infile  input SAM file
      * @return        json string representation of the read

@@ -1,6 +1,6 @@
 # HSPs-db indexer
 
-This repository hosts scripts and a Java project
+This repository hosts scripts and a simple Java project
 for Elasticsearch indexing of NCBI BLAST sequence similarity search
 results, in json and SAM formats.
 We have started working on SAM output files only recently;
@@ -31,8 +31,8 @@ You can see development version of the web interface from the [test server](http
   If you do not have any BLAST results in json format and if you first want to
   see how HSPs-db is working,
   then you can use the sample results we have in the testdb folder.
-  Call [index-folder.sh](scripts/index-folder.sh) script with argument `./testdb`
-  followed by the index name you choose earlier, and URL of your Elasticsearch
+  Call [files2index.sh](scripts/files2index.sh) script with argument `./testdb`
+  followed by the index name you choose earlier, and the URL of your Elasticsearch
   server.
   If you already have outputs in BLAST archive format you can use
   `blast_formatter` command to regenerate your outputs in json format.
