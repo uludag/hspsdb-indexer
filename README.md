@@ -1,22 +1,21 @@
 # HSPs-db indexer
 
-This repository hosts scripts and a simple Java project
-for Elasticsearch indexing of NCBI BLAST sequence similarity search
-results, in json and SAM formats.
-We have started working on SAM output files only recently;
-we do not yet have web interface support for the indexed SAM outputs as we have
-for the indexed json outputs; https://github.com/uludag/hspsdb-webcode.
-You can see development version of the web interface from the [test server](http://hspsdb-test.herokuapp.com/) we have which is connected to an Elasticsearch server with a small set of sample BLAST results.
+This repository includes scripts for Elasticsearch indexing of sequence similarity search
+results, either in NCBI-BLAST xml2/json formats or in SAM/BAM formats.
 
-[ ![Codeship Status for uludag/hspsdb-indexer]
-(https://app.codeship.com/projects/1a5a9020-4dd9-0134-d04d-069048840640/status?branch=master)](https://app.codeship.com/projects/170651)
+In a separate repository we develop web interfaces for the indexed results,
+https://github.com/uludag/hspsdb-webcode. Latest version of the web interface
+for xml2/json outputs is used for a small set of sample BLAST results on a
+[test server](http://hspsdb-test.herokuapp.com/).
+
 
 ### Installation ###
 
-* Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch).
-  If you are new to Elasticsearch you may find Elasticsearch
-  [kopf](https://github.com/lmenezes/elasticsearch-kopf) plugin useful
-  to understand and admin your server
+Following steps describe how to index BLAST result files in xml2/json formats. 
+We will extend this section when the index scripts for SAM/BAM files reach
+to a level of maturity.
+
+* Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch)
 
 * Clone this repository
 
@@ -58,3 +57,4 @@ You can see development version of the web interface from the [test server](http
 Copyright (c)
  [King Abdullah University of Science and Technology](https://www.kaust.edu.sa/),
  Thuwal, SA
+ 
