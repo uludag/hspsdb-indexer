@@ -1,15 +1,18 @@
 # HSPs-db indexer
 
-This repository includes scripts for Elasticsearch indexing of sequence similarity search
-results, either in NCBI-BLAST xml2/json formats or in SAM/BAM formats.
+This repository includes scripts for Elasticsearch indexing of sequence
+similarity search results, either in NCBI-BLAST xml2/json formats
+or in SAM/BAM formats.
 
 In a separate repository we develop web interfaces for the indexed results,
 https://github.com/uludag/hspsdb-webcode. Latest version of the web interface
-for xml2/json outputs is used for a small set of sample BLAST results on a
-[test server](http://hspsdb-test.herokuapp.com/).
+for xml2/json outputs can be seen on a
+[test server](http://hspsdb-test.herokuapp.com/)
+which is connected to an Elasticsearch server with a small set of sample
+BLAST results.
 
 
-### Installation ###
+### Installation
 
 Following steps describe how to index BLAST result files in xml2/json formats. 
 We will extend this section when the index scripts for SAM/BAM files reach
@@ -51,6 +54,14 @@ to a level of maturity.
   [ncbi-sss-client.js](scripts/ncbi-sss-client.js).
   Modules required by the scripts can be installed
   by running `npm install` from project root folder
+  
+### Similar work?
+We can say we want to achieve what the [MultiQC](http://multiqc.info/) project
+has already achieved,
+"A modular tool to aggregate results from bioinformatics analyses
+across many samples into a single report", in a more dynamic way.
+We know we have a long way to go.
+
 
 ## License
 

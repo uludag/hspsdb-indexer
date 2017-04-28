@@ -725,7 +725,8 @@ class read:
     def _end_of_qual(self):      return self._end_of_seq       + self.sam_l_seq            # qual has the same length as seq
 
     def __del__(self):
-        self._subprocess.kill()
+        if self._subprocess.returncode is None:
+            self._subprocess.kill()
         self._file.close()
 
 

@@ -9,3 +9,7 @@ There are also other libraries on Bitbucket that we have not checked yet:
 
 * https://bitbucket.org/aroth85/pybam
 * https://bitbucket.org/dan/pybamparser
+
+TODO:
+* pybam readme file recommends using PyPy for running their library,
+  for faster execution speed
