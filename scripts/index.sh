@@ -1,5 +1,5 @@
 #!/bin/sh
-# Elasticsearch index given BLAST output files in json format
+# Index given BLAST output files in json format with Elasticsearch
 # Example usage:
 # ./scripts/index.sh ./rgsearch-1.json rgsearch-1 index-a http://localhost:9200/
 
@@ -9,7 +9,7 @@ then
 else
     infile=$1
     bname=$(basename "$infile" .json)
-    id=${2-$bname}
+    id=${2-${bname}}
     index=${3-'hspsdb-test'}
     server=${4-'http://localhost:9200'}
 

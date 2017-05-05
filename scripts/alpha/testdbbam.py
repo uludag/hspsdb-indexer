@@ -6,7 +6,7 @@ import argparse, os
 
 from elasticsearch import Elasticsearch
 
-from indexbam import main as indexbam
+from indexbam import index as indexbam
 
 if __name__ == '__main__':
     d = os.path.dirname(os.path.abspath(__file__))

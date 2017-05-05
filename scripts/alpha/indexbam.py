@@ -5,7 +5,9 @@ import json, os
 import argparse
 from elasticsearch import Elasticsearch
 from lib.pybam import pybam
+from elasticsearch.helpers import streaming_bulk
 
+ChunkSize = 2*1024
 
 def getcigar(a):
     c = ""
@@ -17,43 +19,43 @@ def getcigar(a):
 
 
 # TODO: we should store reference name indexes rather than names
-def read_and_index_bam(infile, es, index):
-    parser = ['sam_qname', 'sam_flag', 'sam_refID', 'sam_pos1',
-              'sam_mapq', 'sam_cigar_string',
-              'sam_next_refID', 'sam_pnext1', 'sam_tlen', 'sam_seq',
-              'sam_l_read_name']
-    print("Reading input file '%s' for indexing" % infile)
-    pure_bam = pybam.read(infile, parser)
-    print("Reference sequence names with lengths:")
-    print(pure_bam.file_chromosome_lengths)
-    i = 1
-    for read in pure_bam:
-        r = dict()
-        r['readName'] = read[0]
-        r['flags'] = read[1]
-        refid = read[2]
-        if refid < 0:
-            refname = 'Unmapped'
-        else:
-            refname = pure_bam.file_chromosomes[refid]
-        r['referenceName'] = refname
-        r['alignmentStart'] = read[3]
-        r['mappingQuality'] = read[4]
-        r['cigarString'] = read[5]
-        r['mateReferenceName'] = pure_bam.file_chromosomes[read[6]]
-        r['mateAlignmentStart'] = read[7]
-        r['readLength'] = read[8]
-        # TODO: readSequence vs readString(htsjdk library use this name) ?
-        r['readString'] = read[9]
-        r['filename'] = infile
-        es_index_bamr(es, index, r, infile+str(i))
-        i += 1
+class BAMReader():
 
+    def __init__(self, infile):
+        self.infile = infile
+        self.i = 0
 
-def es_index_bamr(es, index, r, rid):
-    r = es.index(index=index, doc_type='sam',
-                 id=rid, body=json.dumps(r))
-    return r
+    def read_bam(self):
+        parser = ['sam_qname', 'sam_flag', 'sam_refID', 'sam_pos1',
+                  'sam_mapq', 'sam_cigar_string',
+                  'sam_next_refID', 'sam_pnext1', 'sam_tlen', 'sam_seq',
+                  'sam_l_read_name']
+        print("Reading input file '%s' for indexing" % self.infile)
+        pure_bam = pybam.read(self.infile, parser)
+        print("Reference sequence names with lengths:")
+        print(pure_bam.file_chromosome_lengths)
+        for read in pure_bam:
+            self.i += 1
+            r = dict()
+            r['readName'] = read[0]
+            r['flags'] = read[1]
+            refid = read[2]
+            if refid < 0:
+                refname = 'Unmapped'
+            else:
+                refname = pure_bam.file_chromosomes[refid]
+            r['referenceName'] = refname
+            r['alignmentStart'] = read[3]
+            r['mappingQuality'] = read[4]
+            r['cigarString'] = read[5]
+            r['mateReferenceName'] = pure_bam.file_chromosomes[read[6]]
+            r['mateAlignmentStart'] = read[7]
+            r['readLength'] = read[8]
+            # TODO: readSequence vs readString(htsjdk library use this name) ?
+            r['readString'] = read[9]
+            r['filename'] = self.infile
+            r['_id'] = self.infile + str(self.i)
+            yield r
 
 
 def initindex_ifnotdefined(es, index):
@@ -72,10 +74,26 @@ def initindex_ifnotdefined(es, index):
                           ignore=400, body=c)
 
 
-def main(es, infile, index):
+
+# TODO: parallel_bulk
+def index(host, port, infile, index):
+    es = Elasticsearch(host=host, port=port, timeout=600)
     initindex_ifnotdefined(es, index)
-    read_and_index_bam(infile, es, index)
+    i = BAMReader(infile)
+    for ok, result in streaming_bulk(
+            es,
+            i.read_bam(),
+            index=index,
+            doc_type='sam',
+            chunk_size=ChunkSize
+    ):
+        action, result = result.popitem()
+        doc_id = '/%s/commits/%s' % (index, result['_id'])
+        if not ok:
+            print('Failed to %s document %s: %r' % (action, doc_id, result))
     es.indices.refresh(index=index)
+    return i.i
+
 
 
 if __name__ == '__main__':
@@ -91,7 +109,4 @@ if __name__ == '__main__':
     argsdef.add_argument('--port', default="9200",
                         help="Elasticsearch server port")
     args = argsdef.parse_args()
-    host = args.host
-    port = args.port
-    con = Elasticsearch(host=host, port=port, timeout=600)
-    main(con, args.infile, args.index)
+    index(args.host, args.port, args.infile, args.index)
