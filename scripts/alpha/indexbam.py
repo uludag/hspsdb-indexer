@@ -19,7 +19,7 @@ def getcigar(a):
 
 
 # TODO: we should store reference name indexes rather than names
-class BAMReader():
+class BAMReader:
 
     def __init__(self, infile):
         self.infile = infile
@@ -74,7 +74,6 @@ def initindex_ifnotdefined(es, index):
                           ignore=400, body=c)
 
 
-
 # TODO: parallel_bulk
 def index(host, port, infile, index):
     es = Elasticsearch(host=host, port=port, timeout=600)
@@ -93,7 +92,6 @@ def index(host, port, infile, index):
             print('Failed to %s document %s: %r' % (action, doc_id, result))
     es.indices.refresh(index=index)
     return i.i
-
 
 
 if __name__ == '__main__':

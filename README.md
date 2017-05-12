@@ -1,12 +1,12 @@
 # HSPs-db indexer
 
 This repository includes scripts for Elasticsearch indexing of sequence
-similarity search results, either in NCBI-BLAST xml2/json formats
+similarity search results, either in NCBI-BLAST xml/json formats
 or in SAM/BAM formats.
 
 In a separate repository we develop web interfaces for the indexed results,
 https://github.com/uludag/hspsdb-webcode. Latest version of the web interface
-for xml2/json outputs can be seen on a
+for BLAST results in xml/json outputs can be seen on a
 [test server](http://hspsdb-test.herokuapp.com/)
 which is connected to an Elasticsearch server with a small set of sample
 BLAST results.
@@ -14,7 +14,7 @@ BLAST results.
 
 ### Installation
 
-Following steps describe how to index BLAST result files in xml2/json formats. 
+Following steps describe how to index BLAST result files in xml/json formats. 
 We will extend this section when the index scripts for SAM/BAM files reach
 to a level of maturity.
 
@@ -56,16 +56,22 @@ to a level of maturity.
   by running `npm install` from project root folder
   
 ### Similar work?
-We can say we want to achieve what the [MultiQC](http://multiqc.info/) project
+* We can say we want to achieve what the [MultiQC](http://multiqc.info/) project
 has already achieved,
 "A modular tool to aggregate results from bioinformatics analyses
 across many samples into a single report", in a more dynamic way.
 We know we have a long way to go.
+* We can also say HSPs-db project has some similarity to the
+ [SeQC](https://github.com/JohnLonginotto/SeQC) project whic is maintained
+ by the developer of the 'pybam' library which we use for indexing BAM files
 
+### Notes
+* HSPs-db codebase is hosted both with github and bitbucket
+* Project has a simple [home page](https://bitbucket.org/hspsdb/hspsdb-indexer/wiki/Home)
 
 ## License
 
 Copyright (c)
  [King Abdullah University of Science and Technology](https://www.kaust.edu.sa/),
- Thuwal, SA
+ Thuwal, Jeddah, SA
  

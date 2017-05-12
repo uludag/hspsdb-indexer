@@ -1,5 +1,5 @@
 #!/bin/bash
-# Elasticsearch index BLAST json output files in a given folder
+# Index BLAST json output files given in a folder with Elasticsearch
 #
 # Example usage:
 # ./scripts/files2index.sh ./testdb index-a http://localhost:9200/
@@ -16,7 +16,7 @@ function index() {
     curl -XPUT ${server}/${index}/xml2/${id} -d @${infile};
 }
 
-if [ $# -lt 1 ]
+if [ $# -lt 1 ] || [ "${1}" = '--help' ]
 then
     echo "Usage: $0 <folder with BLAST json output files> <index name> [server url]"
 else
@@ -24,7 +24,7 @@ else
     for infile in `ls ${infolder}/*.json`; do
         id=$(basename "$infile" .json)
         echo ${id}
-        index $infile $id
+        index ${infile} ${id}
         i=$((i + 1));
     done
 

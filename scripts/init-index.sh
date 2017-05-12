@@ -34,9 +34,9 @@ curl -XPUT "${server}/${index}/" ${usernamepasswd} -d '
     }
 }';
 
-es_5=`curl ${server} ${usernamepasswd} 2>1 | grep 'number" : "5' | wc -l`
+es_5=`curl -s ${server} ${usernamepasswd} | grep 'number" : "5' | wc -l`
 
-if [ "$es_5" = "1" ]; then
+if [ "${es_5}" = "1" ]; then
     xml2mappings="./scripts/mappings-es5.json"
 else
     xml2mappings="./scripts/mappings.json"

@@ -1,11 +1,13 @@
 
 This folder includes scripts which are at early stages of development
 
-* index-bam.py: script for indexing BAM files, dependent on
+* indexbam.py: script for indexing BAM files, dependent on
  [pybam](https://github.com/JohnLonginotto/pybam) library
 
+* index-mongodb.js: script for indexing BLAST json output files with MongoDB
 
-There are also other libraries on Bitbucket that we have not checked yet:
+
+There are also other Python BAM parsers on Bitbucket that we have not checked yet:
 
 * https://bitbucket.org/aroth85/pybam
 * https://bitbucket.org/dan/pybamparser
