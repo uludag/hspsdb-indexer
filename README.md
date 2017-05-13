@@ -60,13 +60,13 @@ to a level of maturity.
 has already achieved,
 "A modular tool to aggregate results from bioinformatics analyses
 across many samples into a single report", in a more dynamic way.
-We know we have a long way to go.
+We know we have a long way to go
 * We can also say HSPs-db project has some similarity to the
  [SeQC](https://github.com/JohnLonginotto/SeQC) project whic is maintained
  by the developer of the 'pybam' library which we use for indexing BAM files
 
 ### Notes
-* HSPs-db codebase is hosted both with github and bitbucket
+* HSPs-db codebase is hosted both with Bitbucket and Github 
 * Project has a simple [home page](https://bitbucket.org/hspsdb/hspsdb-indexer/wiki/Home)
 
 ## License

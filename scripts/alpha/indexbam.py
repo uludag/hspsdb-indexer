@@ -95,16 +95,22 @@ def index(host, port, infile, index):
 
 
 if __name__ == '__main__':
+    conf = {"host": "localhost", "port": 9200}
+    d = os.path.dirname(os.path.abspath(__file__))
+    try:
+        conf = json.load(open(d + "/../../conf/elasticsearch.json", "r"))
+    finally:
+        pass
     argsdef = argparse.ArgumentParser(
         description='Index given BAM file with Elasticsearch')
-    argsdef.add_argument('--infile',
+    argsdef.add_argument('--infile', required=True,
                         help='Input BAM file to index')
     argsdef.add_argument('--index',
                         default="hspsdb",
                         help='Name of the Elasticsearch index')
-    argsdef.add_argument('--host', default="bio2rdf",
+    argsdef.add_argument('--host', default=conf['host'],
                         help='Elasticsearch server hostname')
-    argsdef.add_argument('--port', default="9200",
+    argsdef.add_argument('--port', default=conf['port'],
                         help="Elasticsearch server port")
     args = argsdef.parse_args()
     index(args.host, args.port, args.infile, args.index)

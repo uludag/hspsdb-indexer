@@ -32,8 +32,7 @@ def initindex_ifnotdefined(es, index):
             }},
             "mappings": m
             }
-        es.indices.create(index=index, params={"timeout": "20s"},
-                          ignore=400, body=c)
+        es.indices.create(index=index, params={"timeout": "20s"}, body=c)
 
 def main(es, infile, index, docid):
     initindex_ifnotdefined(es, index)
@@ -50,17 +49,16 @@ if __name__ == '__main__':
         pass
     argsdef = argparse.ArgumentParser(
         description='Index given BAM file with Elasticsearch')
-    argsdef.add_argument('--infile',
-                         default="../testdb/uniprot_search1.json",
+    argsdef.add_argument('--infile', required=True,
                          help='BLAST json output file to index')
     argsdef.add_argument('--id',
                          help='Elasticsearch doc id (default is file-name)')
     argsdef.add_argument('--index',
                          default="hspsdb",
                          help='Name of the Elasticsearch index')
-    argsdef.add_argument('--host', default="localhost",
+    argsdef.add_argument('--host', default=conf['host'],
                          help='Elasticsearch server hostname')
-    argsdef.add_argument('--port', default="9200",
+    argsdef.add_argument('--port', default=conf['port'],
                          help="Elasticsearch server port")
     args = argsdef.parse_args()
     es = Elasticsearch(host=args.host, port=args.port, timeout=600)
