@@ -2,22 +2,19 @@
   "sam": {
     "properties": {
       "filename": {
-        "type": "string",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "secondOfPairFlag": {
         "type": "boolean"
       },
       "readName": {
-        "type": "string"
+        "type": "keyword"
       },
       "baseQualities": {
-        "type": "string",
-        "index": "no"
+        "type": "keyword"
       },
       "cigarString": {
-        "type": "string",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "flags": {
         "type": "long"
@@ -29,8 +26,7 @@
         "type": "boolean"
       },
       "readBases": {
-        "type": "string",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "inferredInsertSize": {
         "type": "long"
@@ -38,20 +34,17 @@
       "properPairFlag": {
         "type": "boolean"
       },
-      "baseQualityString": {
-        "type": "string",
-        "index": "not_analyzed"
+      "baseQualitykeyword": {
+        "type": "keyword"
       },
       "mappingQuality": {
         "type": "long"
       },
-      "validationStringency": {
-        "type": "string",
-        "index": "not_analyzed"
+      "validationkeywordency": {
+        "type": "keyword"
       },
       "cigar": {
-        "type": "string",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "alignmentStart": {
         "type": "long"
@@ -60,7 +53,7 @@
         "type": "boolean"
       },
       "referenceName": {
-        "type": "string"
+        "type": "keyword"
       },
       "mateUnmappedFlag": {
         "type": "boolean"
@@ -78,8 +71,7 @@
         "type": "boolean"
       },
       "readString": {
-        "type": "string",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "notPrimaryAlignmentFlag": {
         "type": "boolean"
@@ -91,7 +83,7 @@
         "type": "boolean"
       },
       "mateReferenceName": {
-        "type": "string"
+        "type": "keyword"
       }
     }
   }

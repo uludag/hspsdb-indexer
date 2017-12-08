@@ -4,7 +4,7 @@ from __future__ import print_function
 import json, os
 import argparse
 from elasticsearch import Elasticsearch
-from lib.pybam import pybam
+from pybam import pybam
 from elasticsearch.helpers import streaming_bulk
 
 ChunkSize = 2*1024
@@ -70,17 +70,29 @@ def initindex_ifnotdefined(es, index):
             }},
             "mappings": m
             }
-        es.indices.create(index=index, params={"timeout": "20s"},
-                          ignore=400, body=c)
+        r = es.indices.create(index=index, params={"timeout": "20s"},
+                              # ignore=400,
+                              body=c)
+        print(r)
 
 
 # TODO: parallel_bulk
-def index(host, port, infile, index):
-    es = Elasticsearch(host=host, port=port, timeout=600)
-    initindex_ifnotdefined(es, index)
+def index(infile, index, host=None, port=None):
+    conf = {"es_host": "localhost", "es_port": 9200}
+    d = os.path.dirname(os.path.abspath(__file__))
+    try:
+        conf = json.load(open(d + "/../../conf/elasticsearch.json", "r"))
+    finally:
+        pass
+    if host is None:
+        host = conf['es_host']
+    if port is None:
+        port = conf['es_port']
+    esc = Elasticsearch(host=host, port=port, timeout=600)
+    initindex_ifnotdefined(esc, index)
     i = BAMReader(infile)
     for ok, result in streaming_bulk(
-            es,
+            esc,
             i.read_bam(),
             index=index,
             doc_type='sam',
@@ -90,17 +102,11 @@ def index(host, port, infile, index):
         doc_id = '/%s/commits/%s' % (index, result['_id'])
         if not ok:
             print('Failed to %s document %s: %r' % (action, doc_id, result))
-    es.indices.refresh(index=index)
+    esc.indices.refresh(index=index)
     return i.i
 
 
 if __name__ == '__main__':
-    conf = {"host": "localhost", "port": 9200}
-    d = os.path.dirname(os.path.abspath(__file__))
-    try:
-        conf = json.load(open(d + "/../../conf/elasticsearch.json", "r"))
-    finally:
-        pass
     argsdef = argparse.ArgumentParser(
         description='Index given BAM file with Elasticsearch')
     argsdef.add_argument('--infile', required=True,
@@ -108,9 +114,9 @@ if __name__ == '__main__':
     argsdef.add_argument('--index',
                         default="hspsdb",
                         help='Name of the Elasticsearch index')
-    argsdef.add_argument('--host', default=conf['host'],
+    argsdef.add_argument('--host',
                         help='Elasticsearch server hostname')
-    argsdef.add_argument('--port', default=conf['port'],
+    argsdef.add_argument('--port',
                         help="Elasticsearch server port")
     args = argsdef.parse_args()
-    index(args.host, args.port, args.infile, args.index)
+    index(args.infile, args.index, args.host, args.port)

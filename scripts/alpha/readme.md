@@ -8,8 +8,8 @@ This folder includes scripts which are at early stages of development
 
 
 There are also other Python BAM parsers on Bitbucket that we have not checked yet:
-
-* https://bitbucket.org/aroth85/pybam
+* https://github.com/pysam-developers/pysam
+* https://bitbucket.org/aroth85/pybam (last updated in 2012)
 * https://bitbucket.org/dan/pybamparser
 
 TODO:

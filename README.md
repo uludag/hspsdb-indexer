@@ -5,22 +5,34 @@ similarity search results, either in NCBI-BLAST xml/json formats
 or in SAM/BAM formats.
 
 In a separate repository we develop web interfaces for the indexed results,
-https://github.com/uludag/hspsdb-webcode. Latest version of the web interface
-for BLAST results in xml/json outputs can be seen on a
-[test server](http://hspsdb-test.herokuapp.com/)
+[hspsdb-webcode](https://github.com/uludag/hspsdb-webcode).
+Latest version of the web interface for BLAST results in xml/json outputs
+can be seen on a [test server](http://hspsdb-test.herokuapp.com)
 which is connected to an Elasticsearch server with a small set of sample
 BLAST results.
 
+## Installation
 
-### Installation
+Download hspsdb-indexer project source code and install required libraries:
+```bash
+$ git clone https://bitbucket.org/hspsdb/hspsdb-indexer.git
+$ cd hspsdb-indexer
+$ pip install -r requirements.txt --user
+$ git clone https://github.com/JohnLonginotto/pybam.git
+$ touch pybam/__init__.py
+```
+
+* Install [Elasticsearch](https://www.elastic.co)
+
+  If you are new to Elasticsearch and  you are using Linux
+  the easiest way is to [download Elasticsearch](
+  https://www.elastic.co/downloads/elasticsearch) with the TAR option (~30M).
+  After extracting the tar file just `cd` to your Elasticsearch folder
+  and run `./bin/elasticsearch` command.
 
 Following steps describe how to index BLAST result files in xml/json formats. 
 We will extend this section when the index scripts for SAM/BAM files reach
 to a level of maturity.
-
-* Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch)
-
-* Clone this repository
 
 * Choose an Elasticsearch index name for your BLAST results
   and use [init-index.sh](scripts/init-index.sh)
@@ -28,7 +40,7 @@ to a level of maturity.
 
 * If you already have your BLAST outputs in json format use
   [index.sh](scripts/index.sh)
-  or [index-folder.sh](scripts/index-folder.sh) scripts
+  or [index-folder.sh](scripts/files2index.sh) scripts
   to index your output files.
   If you do not have any BLAST results in json format and if you first want to
   see how HSPs-db is working,
@@ -54,24 +66,25 @@ to a level of maturity.
   [ncbi-sss-client.js](scripts/ncbi-sss-client.js).
   Modules required by the scripts can be installed
   by running `npm install` from project root folder
-  
-### Similar work?
-* We can say we want to achieve what the [MultiQC](http://multiqc.info/) project
-has already achieved,
-"A modular tool to aggregate results from bioinformatics analyses
-across many samples into a single report", in a more dynamic way.
-We know we have a long way to go
+
+## Similar work
+
+* We can say we want to achieve what the [MultiQC](http://multiqc.info) project
+  has already achieved; "A modular tool to aggregate results from bioinformatics
+  analyses across many samples into a single report", _in more dynamic reports_.
+  We know we have a long way to go
+
 * We can also say HSPs-db project has some similarity to the
  [SeQC](https://github.com/JohnLonginotto/SeQC) project whic is maintained
  by the developer of the 'pybam' library which we use for indexing BAM files
 
-### Notes
-* HSPs-db codebase is hosted both with Bitbucket and Github 
+## Notes
+
+* HSPs-db codebase is hosted both with Bitbucket and Github
 * Project has a simple [home page](https://bitbucket.org/hspsdb/hspsdb-indexer/wiki/Home)
 
 ## License
 
 Copyright (c)
- [King Abdullah University of Science and Technology](https://www.kaust.edu.sa/),
+ [King Abdullah University of Science and Technology](https://www.kaust.edu.sa),
  Thuwal, Jeddah, SA
- 

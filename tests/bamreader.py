@@ -11,7 +11,7 @@ class BAMReaderTestCase(unittest.TestCase):
 
     def test_index(self):
         infile = "../src/test/resources/htsjdk/samtools/compressed.bam"
-        r = ibam.index('bio2rdf', 9200, infile, 'hspsdb-tests')
+        r = ibam.index(infile, 'hspsdb-tests')
         self.assertEqual(r, 10)
 
 
