@@ -81,7 +81,7 @@ def index(infile, index, host=None, port=None):
     conf = {"es_host": "localhost", "es_port": 9200}
     d = os.path.dirname(os.path.abspath(__file__))
     try:
-        conf = json.load(open(d + "/../../conf/elasticsearch.json", "r"))
+        conf = json.load(open(d + "/../conf/elasticsearch.json", "r"))
     finally:
         pass
     if host is None:
