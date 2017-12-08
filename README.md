@@ -4,12 +4,16 @@ This repository includes scripts for Elasticsearch indexing of sequence
 similarity search results, either in NCBI-BLAST xml/json formats
 or in SAM/BAM formats.
 
-In a separate repository we develop web interfaces for the indexed results,
-[hspsdb-webcode](https://github.com/uludag/hspsdb-webcode).
-Latest version of the web interface for BLAST results in xml/json outputs
-can be seen on a [test server](http://hspsdb-test.herokuapp.com)
-which is connected to an Elasticsearch server with a small set of sample
-BLAST results.
+## History and project structure
+
+Initial effort of the project was writing shell and JavaScript scripts
+for BLAST xml2/json files. Later we wanted to support for SAM
+Sequence Alignment/Map format, using JAVA HTSJDK library.
+Later we have found pybam library as an alternative for reading BAM
+files and have started adding Python scripts to the project.
+For this reason project is not a pure Java, Python or JavaScript project.
+We have project files for all these 3 languages; _pom.xml_, _setup.py_,
+_package.json_.
 
 ## Installation
 
@@ -80,6 +84,13 @@ to a level of maturity.
 
 ## Notes
 
+In a separate repository we develop web interfaces for the indexed results,
+[hspsdb-webcode](https://github.com/uludag/hspsdb-webcode).
+Latest version of the web interface for BLAST results in xml/json outputs
+can be seen on a [test server](http://hspsdb-test.herokuapp.com)
+which is connected to an Elasticsearch server with a small set of sample
+BLAST results.
+
 * HSPs-db codebase is hosted both with Bitbucket and Github
 * Project has a simple [home page](https://bitbucket.org/hspsdb/hspsdb-indexer/wiki/Home)
 
@@ -87,4 +98,4 @@ to a level of maturity.
 
 Copyright (c)
  [King Abdullah University of Science and Technology](https://www.kaust.edu.sa),
- Thuwal, Jeddah, SA
+ Thuwal, Jeddah, Saudi Arabia
