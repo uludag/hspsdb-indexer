@@ -1,15 +1,15 @@
 # HSPs-db indexer
 
-This repository includes scripts for Elasticsearch indexing of sequence
-similarity search results, either in NCBI-BLAST xml/json formats
+This repository includes scripts for Elasticsearch/MongoDB indexing of sequence
+similarity search results, either in NCBI-BLAST xml/json formats, tabular format,
 or in SAM/BAM formats.
 
 ## History and project structure
 
-Initial effort of the project was writing shell and JavaScript scripts
-for BLAST xml2/json files. Later we wanted to support for SAM
-Sequence Alignment/Map format, using JAVA HTSJDK library.
-Later we have found pybam library as an alternative for reading BAM
+Initial effort of the project was for BLAST xml/json files.
+Later we wanted to support for SAM Sequence Alignment/Map format,
+using JAVA HTSJDK library.
+Later we have found pybam and pysam libraries as alternatives for reading SAM/BAM
 files and have started adding Python scripts to the project.
 For this reason project is not a pure Java, Python or JavaScript project.
 We have project files for all these 3 languages; _pom.xml_, _setup.py_,
@@ -73,14 +73,24 @@ to a level of maturity.
 
 ## Similar work
 
+* https://github.com/daler/gffutils:
+  "GFF and GTF files are loaded into SQLite3 databases,
+  allowing much more complex manipulation of hierarchical features
+  (e.g., genes, transcripts, and exons) than is possible with plain-text methods
+  alone"
+  
+  _nosql-biosets project doesn't yet have a level of maturity comparable
+   to the gffutils library_.
+
 * We can say we want to achieve what the [MultiQC](http://multiqc.info) project
   has already achieved; "A modular tool to aggregate results from bioinformatics
-  analyses across many samples into a single report", _in more dynamic reports_.
-  We know we have a long way to go
+  analyses across many samples into a single report", _with more dynamic reports_.
 
 * We can also say HSPs-db project has some similarity to the
  [SeQC](https://github.com/JohnLonginotto/SeQC) project whic is maintained
  by the developer of the 'pybam' library which we use for indexing BAM files
+ 
+ * https://www.monetdb.org/Documentation/Extensions/LifeScience/load 
 
 ## Notes
 
@@ -94,7 +104,7 @@ BLAST results.
 * HSPs-db codebase is hosted both with Bitbucket and Github
 * Project has a simple [home page](https://bitbucket.org/hspsdb/hspsdb-indexer/wiki/Home)
 
-## License
+## Copyright
 
 Copyright (c)
  [King Abdullah University of Science and Technology](https://www.kaust.edu.sa),

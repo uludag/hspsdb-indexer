@@ -1,7 +1,7 @@
 #!/bin/sh
 
 infile=$1
-index=${2-'hspsdb-test'}
+index=${2-'hspsdb'}
 server=${3-'http://localhost:9200'}
 
 function print_usage()
@@ -11,8 +11,8 @@ function print_usage()
     echo ""
     echo "Usage:  $0 <samfile> [<index> [<server>]] "
     echo ""
-    echo "server: elasticsearch server"
-    echo "id: elasticsearch database id for the new record"
+    echo "server: Elasticsearch server"
+    echo "id: Elasticsearch database id for the new record"
     echo ""
 }
 

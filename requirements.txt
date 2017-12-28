@@ -1,1 +1,3 @@
 elasticsearch
+pysam
+nosql-biosets
