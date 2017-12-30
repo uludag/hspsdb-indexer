@@ -34,9 +34,11 @@ $ touch pybam/__init__.py
   After extracting the tar file just `cd` to your Elasticsearch folder
   and run `./bin/elasticsearch` command.
 
+## Indexing BLAST results in xml, json formats
+  
 Following steps describe how to index BLAST result files in xml/json formats. 
-We will extend this section when the index scripts for SAM/BAM files reach
-to a level of maturity.
+We will add new sections when the index scripts for SAM/BAM files and tabular
+result files reach to a level of maturity.
 
 * Choose an Elasticsearch index name for your BLAST results
   and use [init-index.sh](scripts/init-index.sh)
@@ -101,11 +103,9 @@ can be seen on a [test server](http://hspsdb-test.herokuapp.com)
 which is connected to an Elasticsearch server with a small set of sample
 BLAST results.
 
-* HSPs-db codebase is hosted both with Bitbucket and Github
-* Project has a simple [home page](https://bitbucket.org/hspsdb/hspsdb-indexer/wiki/Home)
-
 ## Copyright
 
-Copyright (c)
- [King Abdullah University of Science and Technology](https://www.kaust.edu.sa),
- Thuwal, Jeddah, Saudi Arabia
+HSPs-db indexer project has been developed
+at King Abdullah University of Science and Technology, http://www.kaust.edu.sa
+
+HSPs-db indexer project is licensed with MIT license.
