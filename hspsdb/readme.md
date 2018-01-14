@@ -13,7 +13,9 @@ We have the following two scripts
   find most represented genes and present them using PivotTable.js
   
  ```bash
-./hspsdb/queryHSPs.py topgenes  study1-diamond  study1-diamond-topgenes -b 120
+./hspsdb/queryHSPs.py topgenes  study1-diamond  study1-diamond-topgenes\
+ --bitscore 120
+chrome study1-diamond-topgenes.html
  ```
 
 

@@ -45,9 +45,10 @@ class QueryHSPs():
                         "$uniprot.dbReference.property", 0]},
                     "feature": "$uniprot.gene.name.#text"
                 },
-                "total": {"$sum": 1}}
-            },
-            {"$sort": {"total": -1}},
+                "abundance": {"$sum": 1},
+                "bitscore": {"$sum": "$bitscore"}
+            }},
+            {"$sort": {"abundance": -1}},
             {"$limit": limit}
         ]
         r = mdbc.mdbi[collection].aggregate(aggqc)
@@ -72,12 +73,13 @@ class QueryHSPs():
                 goclass = 'Molecular function'
             sample = i['_id']['sample']
             feat = i['_id']['feature']
-            total = i['total']
-            rr.append((sample, goclass, goterm, feat, total))
+            abundance = i['abundance']
+            bitscore = i['bitscore']
+            rr.append((sample, goclass, goterm, feat, abundance, bitscore))
         json.dump(rr, open(outfile+'.json', 'w'), indent=4)
         df = pd.DataFrame(rr,
                           columns=['Sample', 'GO group', 'GO term',
-                                   'Gene', 'Abundance'])
+                                   'Gene', 'Abundance', 'Bitscore'])
         pivot_ui(df, outfile_path=outfile+'.html',
                  rows=['GO group', 'GO term', 'Gene'],
                  cols=['Sample'],
@@ -87,7 +89,13 @@ class QueryHSPs():
 
 @arg('study', help='Name of the MongoDB collection for HSPs of a study')
 @arg('outfile', help='File name for the pivot table to be generated')
+@arg('--bitscore', help='Minimum bitscore of HSPs')
+@arg('--mismatch', help='Maximum mismatch in HSPs')
 def topgenes(study, outfile, bitscore=100, mismatch=1, limit=600):
+    """
+    Abundance of genes grouped by GO categories and terms,
+    query results are saved in a json file and as PivotTable.js html file
+    """
     qry = QueryHSPs()
     qry.topmatches_linked2UniProt_genes_GO(study, outfile,
                                            bitscore, mismatch, limit)
