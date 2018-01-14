@@ -74,7 +74,7 @@ class QueryHSPs():
             feat = i['_id']['feature']
             total = i['total']
             rr.append((sample, goclass, goterm, feat, total))
-        print(json.dump(rr, open(outfile+'.json', 'w'), indent=4))
+        json.dump(rr, open(outfile+'.json', 'w'), indent=4)
         df = pd.DataFrame(rr,
                           columns=['Sample', 'GO group', 'GO term',
                                    'Gene', 'Abundance'])
@@ -85,14 +85,14 @@ class QueryHSPs():
                  vals=["Abundance"])
 
 
-@arg('collection', help='Name of the MongoDB collection for HSPs of a study')
+@arg('study', help='Name of the MongoDB collection for HSPs of a study')
 @arg('outfile', help='File name for the pivot table to be generated')
-def topgenes(collection, outfile, bitscore=100, mismatch=1, limit=600):
+def topgenes(study, outfile, bitscore=100, mismatch=1, limit=600):
     qry = QueryHSPs()
-    qry.topmatches_linked2UniProt_genes_GO(collection, outfile,
+    qry.topmatches_linked2UniProt_genes_GO(study, outfile,
                                            bitscore, mismatch, limit)
 
 if __name__ == "__main__":
     argh.dispatch_commands([
-        topgenespivot
+        topgenes
     ])
