@@ -1,3 +1,5 @@
 elasticsearch
 pysam
-nosql-biosets
+nosqlbiosets
+pivottablejs
+pandas
