@@ -2,10 +2,10 @@
 """ Query indexed HSPs data, save results in PivotTable.js files """
 
 import json
-import argh
-from argh import arg
 
+import argh
 import pandas as pd
+from argh import arg
 from nosqlbiosets.dbutils import DBconnection
 from nosqlbiosets.uniprot.query import QueryUniProt
 from pivottablejs import pivot_ui
@@ -17,12 +17,14 @@ mdbc = DBconnection("MongoDB", INDEX)
 
 class QueryHSPs():
 
-    def _topmatches_linked2UniProt_genes_GO(self, collection,
-                                            bitscore=128,
-                                            mismatch=1, limit=100):
+    def _topmatches_qc(self, bitscore=128, mismatch=1):
         qc = {"bitscore": {"$gt": bitscore},
               "mismatch": {"$lt": mismatch}
               }
+        return qc
+
+    def _topmatches_linked2uniprot_qc(self, bitscore=128, mismatch=1):
+        qc = self._topmatches_qc(bitscore, mismatch)
         aggqc = [
             {"$match": qc},
             {"$lookup": {
@@ -30,7 +32,15 @@ class QueryHSPs():
                 "localField": "sseqid",
                 "foreignField": "_id",
                 "as": "uniprot"
-            }},
+            }}
+        ]
+        return aggqc
+
+    def topmatches_linked2UniProt(self, collection,
+                                  bitscore=128, mismatch=1,
+                                  limit=100):
+        aggqc = self._topmatches_linked2uniprot_qc(bitscore, mismatch)
+        aggqc += [
             {"$unwind": "$uniprot"},
             {"$unwind": "$uniprot.gene"},
             {"$unwind": "$uniprot.gene.name"},
@@ -41,9 +51,10 @@ class QueryHSPs():
             {"$group": {
                 "_id": {
                     "sample": "$_id.sample",
-                    "feattype": {"$arrayElemAt": [
+                    "goannot": {"$arrayElemAt": [
                         "$uniprot.dbReference.property", 0]},
-                    "feature": "$uniprot.gene.name.#text"
+                    "gene": "$uniprot.gene.name.#text",
+                    "organism": "$uniprot.organism.name.#text"
                 },
                 "abundance": {"$sum": 1},
                 "bitscore": {"$sum": "$bitscore"}
@@ -51,20 +62,11 @@ class QueryHSPs():
             {"$sort": {"abundance": -1}},
             {"$limit": limit}
         ]
-        r = mdbc.mdbi[collection].aggregate(aggqc)
-        return r
-
-    def topmatches_linked2UniProt_genes_GO(self, collection, outfile,
-                                           bitscore=100,
-                                           mismatch=1, limit=600):
-        r = self._topmatches_linked2UniProt_genes_GO(collection,
-                                                     bitscore=bitscore,
-                                                     mismatch=mismatch,
-                                                     limit=limit)
-        rr = []
-        for i in r:
-            goterm = i['_id']['feattype']['value'][2:]
-            goclass = i['_id']['feattype']['value'][:1]
+        cr = mdbc.mdbi[collection].aggregate(aggqc)
+        r = []
+        for i in cr:
+            goterm = i['_id']['goannot']['value'][2:]
+            goclass = i['_id']['goannot']['value'][:1]
             if goclass == 'C':
                 goclass = 'Cellular component'
             elif goclass == 'P':
@@ -72,13 +74,19 @@ class QueryHSPs():
             else:
                 goclass = 'Molecular function'
             sample = i['_id']['sample']
-            feat = i['_id']['feature']
+            gene = i['_id']['gene']
+            organism = i['_id']['organism']
             abundance = i['abundance']
             bitscore = i['bitscore']
-            rr.append((sample, goclass, goterm, feat, abundance, bitscore))
-        json.dump(rr, open(outfile+'.json', 'w'), indent=4)
-        df = pd.DataFrame(rr,
-                          columns=['Sample', 'GO group', 'GO term',
+            r.append((sample, organism, goclass, goterm, gene,
+                      abundance, bitscore))
+        return r
+
+    @staticmethod
+    def save_topmatches_linked2UniProt(r, outfile):
+        json.dump(r, open(outfile+'.json', 'w'), indent=4)
+        df = pd.DataFrame(r,
+                          columns=['Sample', 'Organism', 'GO group', 'GO term',
                                    'Gene', 'Abundance', 'Bitscore'])
         pivot_ui(df, outfile_path=outfile+'.html',
                  rows=['GO group', 'GO term', 'Gene'],
@@ -93,12 +101,13 @@ class QueryHSPs():
 @arg('--mismatch', help='Maximum mismatch in HSPs')
 def topgenes(study, outfile, bitscore=100, mismatch=1, limit=600):
     """
-    Abundance of genes grouped by GO categories and terms,
-    query results are saved in a json file and as PivotTable.js html file
+    Abundance of HSPs grouped by organisms, genes, and GO annotations.
+    Query results are saved in a json file and as PivotTable.js html file
     """
     qry = QueryHSPs()
-    qry.topmatches_linked2UniProt_genes_GO(study, outfile,
-                                           bitscore, mismatch, limit)
+    r = qry.topmatches_linked2UniProt(study, bitscore, mismatch, limit)
+    qry.save_topmatches_linked2UniProt(r, outfile)
+
 
 if __name__ == "__main__":
     argh.dispatch_commands([
