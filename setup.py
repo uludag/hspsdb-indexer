@@ -7,10 +7,11 @@ requirements = open(os.path.join(os.path.dirname(__file__),
 packages = find_packages()
 
 setup (
-       name='hspsdb-indexer',
-       version='0.0.1',
-       packages=find_packages(),
-       install_requires=requirements,
-       long_description = 'Index scripts for sequence similarity search results '
-                          'in NCBI-BLAST json/xml2 formats or in SAM/BAM formats'
+    name='hspsdb',
+    version='0.0.2',
+    packages=find_packages(),
+    install_requires=requirements,
+    long_description = 'Index scripts for sequence similarity search results '
+                       'either in NCBI-BLAST xml/json formats, tabular format, '
+                       'or in SAM/BAM formats'
 )
