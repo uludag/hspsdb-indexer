@@ -2,17 +2,18 @@
 """ Index tabular sequence similarity search result files """
 from __future__ import print_function
 
-import os
 from pprint import pprint
 
+import argh
 import pandas as pd
+from argh import arg
 from nosqlbiosets.dbutils import DBconnection
 from pymongo.errors import BulkWriteError
 
 CHUNK_SIZE = 2048
 
 names = ["qseqid", "sseqid", "pident", "length", "mismatch",
-"gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"]
+         "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"]
 
 ''' Default 12 columns: https://github.com/seqan/lambda/wiki/BLAST-Output-Formats
 Query Seq-id, Subject Seq-id, Percentage of identical matches, Alignment length,
@@ -23,12 +24,13 @@ End of alignment in subject, Expect value, Bit score
 
 
 def create_indices(mdb, collection):
-    indx_fields = ["length", "sseqid"]
+    indx_fields = ["length", "sseqid", "bitscore", "mismatch"]
     for field in indx_fields:
-        mdb[collection].create_index(field)
+        r = mdb[collection].create_index(field)
+        print(r)
 
 
-def index_hsps(mdbi, infile, sampleid, pair, collection, delimiter='\t'):
+def _index_hsps(mdbi, infile, sampleid, pair, collection, delimiter='\t'):
     dfr = pd.read_csv(infile, sep=delimiter, header=None, names=names,
                       chunksize=CHUNK_SIZE, index_col=False)
     i = 0
@@ -36,7 +38,10 @@ def index_hsps(mdbi, infile, sampleid, pair, collection, delimiter='\t'):
         hsps = df.to_dict(orient="records")
         for hsp in hsps:
             i += 1
-            hsp['_id'] = {"read": i, "sample": sampleid, "pair": pair}
+            # TODO: improve parsing/selection for search sequence ids
+            hsp['sseqid'] = hsp['sseqid'].split('|')[-1]
+            del hsp['qseqid']  # until we use this information
+            hsp['_id'] = {"hsp": i, "sample": sampleid, "pair": pair}
         try:
             mdbi[collection].insert_many(hsps, ordered=False,
                                          bypass_document_validation=True)
@@ -44,16 +49,30 @@ def index_hsps(mdbi, infile, sampleid, pair, collection, delimiter='\t'):
             pprint(e)
             pprint(e.details)
             exit()
-        if i >= CHUNK_SIZE * 10:
-            break
+        # if i >= 100000:
+        #     break
 
-def main(db, infile, sampleid, pair, index, collection, delimiter='\t',
-         user=None, password=None, host=None, port=None):
-    dbc = DBconnection(db, index, host=host, port=port, user=user,
+
+@arg('infile', help='Similarity search results in tabular format')
+@arg('sampleid', help='Id of the sample the query sequences were sequenced from')
+@arg('collection', help='MongoDB collection,'
+                        ' for indexing/collecting HSPs of the study')
+def index(infile, sampleid, collection, pair=-1,
+          db="MongoDB", database='biosets', delimiter='\t',
+          user=None, password=None, host=None, port=None):
+    """
+    Index similarity search results of a sample
+    """
+    dbc = DBconnection(db, database, host=host, port=port, user=user,
                        password=password)
     if dbc.db == "MongoDB":
-        # Delete previous reads with the same sample-id and pair-id
+        # Delete previous reads with the same sample/pair ids
         dbc.mdbi[collection].delete_many({
             '_id.sample': sampleid, '_id.pair': pair})
-        index_hsps(dbc.mdbi, infile, sampleid, pair, collection, delimiter)
+        _index_hsps(dbc.mdbi, infile, sampleid, pair, collection, delimiter)
         create_indices(dbc.mdbi, collection)
+
+if __name__ == "__main__":
+    argh.dispatch_commands([
+        index
+    ])
