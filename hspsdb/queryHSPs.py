@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-""" Query indexed HSPs data, save results in PivotTable.js files """
+""" Query MongoDB indexed HSPs, save results in PivotTable.js files.
+ Current version supports search results against UniProt sequences only
+ """
 
 import json
 
@@ -9,11 +11,12 @@ from argh import arg
 from nosqlbiosets.dbutils import DBconnection
 from nosqlbiosets.uniprot.query import QueryUniProt
 from pivottablejs import pivot_ui
+import logging
 
 INDEX = "biosets"
 qryuniprot = QueryUniProt("MongoDB", INDEX, "uniprot")
 mdbc = DBconnection("MongoDB", INDEX)
-
+log = logging.getLogger(__name__)
 
 class QueryHSPs():
 
@@ -23,14 +26,25 @@ class QueryHSPs():
               }
         return qc
 
-    def _topmatches_linked2uniprot_qc(self, bitscore=128, mismatch=1):
+    # Check whether HSP ids are UniProt names or accessions
+    def _is_id_name(self, collection):
+        r = mdbc.mdbi[collection].find({}, limit=1)
+        r = list(r)
+        assert 1 == len(r)
+        id = r[0]['sseqid']
+        return True if '_' in id else False
+
+
+    def _topmatches_linked2uniprot_qc(self, collection, bitscore=128,
+                                      mismatch=1):
         qc = self._topmatches_qc(bitscore, mismatch)
+        lookupfield = '_id' if self._is_id_name(collection) else 'accession'
         aggqc = [
             {"$match": qc},
             {"$lookup": {
                 "from": 'uniprot',
                 "localField": "sseqid",
-                "foreignField": "_id",
+                "foreignField": lookupfield,
                 "as": "uniprot"
             }}
         ]
@@ -39,7 +53,8 @@ class QueryHSPs():
     def topmatches_linked2UniProt(self, collection,
                                   bitscore=128, mismatch=1,
                                   limit=100):
-        aggqc = self._topmatches_linked2uniprot_qc(bitscore, mismatch)
+        aggqc = self._topmatches_linked2uniprot_qc(collection, bitscore,
+                                                   mismatch)
         aggqc += [
             {"$unwind": "$uniprot"},
             {"$unwind": "$uniprot.gene"},
@@ -57,12 +72,14 @@ class QueryHSPs():
                     "organism": "$uniprot.organism.name.#text"
                 },
                 "abundance": {"$sum": 1},
+                # TODO: normalized abundance values
                 "bitscore": {"$sum": "$bitscore"}
             }},
             {"$sort": {"abundance": -1}},
             {"$limit": limit}
         ]
-        cr = mdbc.mdbi[collection].aggregate(aggqc)
+        cr = mdbc.mdbi[collection].aggregate(aggqc, allowDiskUse=True)
+        log.info('topmatches_linked2UniProt query returned')
         r = []
         for i in cr:
             goterm = i['_id']['goannot']['value'][2:]
@@ -96,15 +113,18 @@ class QueryHSPs():
 
 
 @arg('study', help='Name of the MongoDB collection for HSPs of a study')
-@arg('outfile', help='File name for the pivot table to be generated')
+@arg('--outfile', help='File name for the pivot table to be generated')
 @arg('--bitscore', help='Minimum bitscore of HSPs')
 @arg('--mismatch', help='Maximum mismatch in HSPs')
-def topgenes(study, outfile, bitscore=100, mismatch=1, limit=600):
+@arg('--limit', help='Limit for the aggreagted results')
+def topgenes(study, outfile=None, bitscore=100, mismatch=1, limit=2600):
     """
     Abundance of HSPs grouped by organisms, genes, and GO annotations.
     Query results are saved in a json file and as PivotTable.js html file
     """
     qry = QueryHSPs()
+    if outfile == None:
+        outfile = study
     r = qry.topmatches_linked2UniProt(study, bitscore, mismatch, limit)
     qry.save_topmatches_linked2UniProt(r, outfile)
 

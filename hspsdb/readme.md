@@ -19,9 +19,12 @@ sequence similarity search results.
   find most represented genes and present them using PivotTable.js
   
  ```bash
-./hspsdb/queryHSPs.py topgenes  study1-diamond  study1-diamond-topgenes\
+./hspsdb/queryHSPs.py topgenes  study1-diamond  study1-topgenes\
  --bitscore 120
 chrome study1-diamond-topgenes.html
+# If output file name not specified it is set to the name of the study    
+./hspsdb/queryHSPs.py topgenes studyk --bitscore 60
+chrome studyk.html
  ```
 
 ## Search results in SAM/BAM format
