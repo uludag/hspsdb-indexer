@@ -1,6 +1,6 @@
-# HSPs-db indexer
+# HSPs-db
 
-This repository includes scripts for Elasticsearch/MongoDB indexing of sequence
+This repository includes scripts for indexing sequence
 similarity search results, either in NCBI-BLAST xml/json formats, tabular format,
 or in SAM/BAM formats.
 
@@ -15,15 +15,21 @@ For this reason project is not a pure Java, Python or JavaScript project.
 We have project files for all these 3 languages; _pom.xml_, _setup.py_,
 _package.json_.
 
+Initally only Elasticsearch indexes were supported, later
+MongoDB support added. In most recent work (support for tabular results)
+we focus on MongoDB indexes and queries.
+
 ## Installation
 
-Download hspsdb-indexer project source code and install required libraries:
+Download hspsdb project source code and install required libraries:
+
 ```bash
-$ git clone https://bitbucket.org/hspsdb/hspsdb-indexer.git
-$ cd hspsdb-indexer
-$ pip install -r requirements.txt --user
-$ git clone https://github.com/JohnLonginotto/pybam.git
-$ touch pybam/__init__.py
+git clone https://bitbucket.org/hspsdb/nosql-biosets.git ./nosqlbiosets
+cd nosqlbiosets
+pip install -r requirements.txt --user
+git clone https://bitbucket.org/hspsdb/hspsdb-indexer.git ./hspsdb
+cd hspsdb
+pip install -r requirements.txt --user
 ```
 
 * Install [Elasticsearch](https://www.elastic.co)
@@ -34,8 +40,8 @@ $ touch pybam/__init__.py
   After extracting the tar file just `cd` to your Elasticsearch folder
   and run `./bin/elasticsearch` command.
 
-## Indexing BLAST results in xml, json formats
-  
+## Indexing results in BLAST xml, json formats
+
 Following steps describe how to index BLAST result files in xml/json formats. 
 We will add new sections when the index scripts for SAM/BAM files and tabular
 result files reach to a level of maturity.
@@ -105,7 +111,7 @@ BLAST results.
 
 ## Copyright
 
-HSPs-db indexer project has been developed
+HSPs-db project has been developed
 at King Abdullah University of Science and Technology, http://www.kaust.edu.sa
 
-HSPs-db indexer project is licensed with MIT license.
+HSPs-db project is licensed with MIT license.
