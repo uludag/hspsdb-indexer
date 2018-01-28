@@ -92,7 +92,7 @@ class QueryHSPs():
                 goclass = 'Molecular function'
             sample = i['_id']['sample']
             gene = i['_id']['gene']
-            organism = i['_id']['organism']
+            organism = i['_id']['organism'][0]
             abundance = i['abundance']
             bitscore = i['bitscore']
             r.append((sample, organism, goclass, goterm, gene,
@@ -100,16 +100,19 @@ class QueryHSPs():
         return r
 
     @staticmethod
-    def save_topmatches_linked2UniProt(r, outfile):
+    def save_topmatches_linked2UniProt(r, outfile,
+                                       rows=['GO group', 'GO term', 'Gene']):
         json.dump(r, open(outfile+'.json', 'w'), indent=4)
         df = pd.DataFrame(r,
                           columns=['Sample', 'Organism', 'GO group', 'GO term',
                                    'Gene', 'Abundance', 'Bitscore'])
-        pivot_ui(df, outfile_path=outfile+'.html',
-                 rows=['GO group', 'GO term', 'Gene'],
+        outfile += '.html'
+        pivot_ui(df, outfile_path=outfile,
+                 rows=rows,
                  cols=['Sample'],
                  rendererName="Heatmap", aggregatorName="Sum",
                  vals=["Abundance"])
+        print('Pivot table of query results saved in '+ outfile)
 
 
 @arg('study', help='Name of the MongoDB collection for HSPs of a study')
@@ -117,7 +120,8 @@ class QueryHSPs():
 @arg('--bitscore', help='Minimum bitscore of HSPs')
 @arg('--mismatch', help='Maximum mismatch in HSPs')
 @arg('--limit', help='Limit for the aggreagted results')
-def topgenes(study, outfile=None, bitscore=100, mismatch=1, limit=2600):
+def topgenes(study, outfile=None, bitscore=100, mismatch=1, limit=2600,
+             rows='GO term, Gene'):
     """
     Abundance of HSPs grouped by organisms, genes, and GO annotations.
     Query results are saved in a json file and as PivotTable.js html file
@@ -126,7 +130,8 @@ def topgenes(study, outfile=None, bitscore=100, mismatch=1, limit=2600):
     if outfile == None:
         outfile = study
     r = qry.topmatches_linked2UniProt(study, bitscore, mismatch, limit)
-    qry.save_topmatches_linked2UniProt(r, outfile)
+    rows = [r.strip() for r in rows.split(",")]
+    qry.save_topmatches_linked2UniProt(r, outfile, rows)
 
 
 if __name__ == "__main__":
