@@ -54,20 +54,25 @@ two samples
  ```
 
 * [queryHSPs.py](./hspsdb/queryHSPs.py): Query indexed similarity search results,
-  find most represented genes and present them using PivotTable.js
+  find most abundant genes and present them using PivotTable.js
   
   
  ```bash
-./hspsdb/queryHSPs.py topgenes  studyk  studyk-topgenes\
- --bitscore 120
-chrome study1-diamond-topgenes.html
-# If output file name not specified it is set to the name of the study    
 
+# Query 
+./hspsdb/queryHSPs.py topgenes  studyk --outfile studyk-topgenes\
+   --bitscore 30 --mismatch 2
+
+# Open generated html with Chrome 
+chrome studyk-topgenes.html
+
+# If output file name not specified it is set to the name of the study    
 ./hspsdb/queryHSPs.py topgenes studyk --bitscore 60
 
 chrome studyk.html
 
  ```
+*  Example _topgenes_ pivot table [report](./docs/example-topgenes.html)
 
 ## Indexing results in BLAST xml, json formats
 
