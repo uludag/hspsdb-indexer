@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-""" Query MongoDB indexed HSPs, save results in PivotTable.js files.
+""" Query MongoDB indexed HSPs, save results in PivotTable.js html files.
  Current version supports search results against UniProt sequences only
  """
 
@@ -92,7 +92,7 @@ class QueryHSPs():
                 goclass = 'Molecular function'
             sample = i['_id']['sample']
             gene = i['_id']['gene']
-            organism = i['_id']['organism'][0]
+            organism = i['_id']['organism']
             abundance = i['abundance']
             bitscore = i['bitscore']
             r.append((sample, organism, goclass, goterm, gene,
@@ -124,7 +124,7 @@ def topgenes(study, outfile=None, bitscore=100, mismatch=1, limit=2600,
              rows='GO term, Gene'):
     """
     Abundance of HSPs grouped by organisms, genes, and GO annotations.
-    Query results are saved in a json file and as PivotTable.js html file
+    Query results are saved in a json file and as PivotTable.js html files
     """
     qry = QueryHSPs()
     if outfile == None:
