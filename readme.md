@@ -19,11 +19,19 @@ For this reason project is not a pure Java, Python or JavaScript project,
 and have project files for all these 3 languages; _pom.xml_, _setup.py_,
 _package.json_.
 
+During early stages of the project we implemented Node.js client scripts
+for EMBL-EBI and NCBI, BLAST services; [ebi-sss-client.js](scripts/ebi-sss-client.js),
+[ncbi-sss-client.js](scripts/ncbi-sss-client.js) in order to help users
+with automated searches for their input sequences. This is why we have
+_package.json_ project file.
+Modules required by the BLAST client scripts can be installed
+by running `npm install` from project root folder
+
 ## Requirements
 
 - Running [MongoDB](https://www.mongodb.com) server
 
-- [nosqlbiosets](https://bitbucket.org/hspsdb/nosql-biosets);
+- [nosqlbiosets](https://bitbucket.org/hspsdb/nosql-biosets) project,
   for indexing and querying UniProt
 
   Until we have a slim UniProt index pulicly available,
@@ -51,7 +59,39 @@ pip install -r requirements.txt --user
  [BLASTX](http://blast.ncbi.nlm.nih.gov),
  or [DIAMOND](https://github.com/bbuchfink/diamond)
 
-Example command lines to index LAMBDA search results of sequencing reads from
+```bash
+./hspsdb/indexHSPs.py index --help
+```
+```
+usage: indexHSPs.py index [-h] [--pair PAIR] [--db DB] [--database DATABASE]
+                          [--delimiter DELIMITER] [-u USER]
+                          [--password PASSWORD] [--host HOST] [--port PORT]
+                          infile sampleid collection
+
+    Index similarity search results of a sample
+    
+
+positional arguments:
+  infile                Similarity search results in tabular format
+  sampleid              Id of the sample the query sequences were sequenced
+                        from
+  collection            MongoDB collection, for indexing/collecting HSPs of
+                        the study
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --pair PAIR           -1
+  --db DB               'MongoDB'
+  --database DATABASE   'biosets'
+  --delimiter DELIMITER
+                        '\t'
+  -u USER, --user USER  -
+  --password PASSWORD   -
+  --host HOST           -
+  --port PORT           -
+```
+
+  Example command lines to index LAMBDA search results of sequencing reads from
 two samples
 
  ```bash 
@@ -60,6 +100,9 @@ two samples
 ./hspsdb/indexHSPs.py index ~/studyk/cutadapt-lambda2/sample2.R1.m8 sample2 studyk --pair=1
 ./hspsdb/indexHSPs.py index ~/studyk/cutadapt-lambda2/sample2.R2.m8 sample2 studyk --pair=2  
  ```
+
+  Default values for MongoDB connection are read from nosql-biosets project
+`conf/dbservers.json` configuration file 
 
 * [queryHSPs.py](./hspsdb/queryHSPs.py): Query indexed similarity search results,
   find most abundant genes and present them using PivotTable.js
@@ -152,15 +195,18 @@ result files reach to a level of maturity.
   then use `blast_formatter` to generate the outputs you normally read
   and the json output for indexing
 
-* This repository also includes Node.js client scripts for EMBL-EBI and NCBI,
-  BLAST services; [ebi-sss-client.js](scripts/ebi-sss-client.js),
-  [ncbi-sss-client.js](scripts/ncbi-sss-client.js).
-  Modules required by the scripts can be installed
-  by running `npm install` from project root folder
+### Querying indexed results
+
+In a separate repository we develop web interfaces for the indexed results,
+[hspsdb-webcode](https://github.com/uludag/hspsdb-webcode).
+Latest version of the web interface for BLAST results in xml/json outputs
+can be seen on a [test server](http://hspsdb-test.herokuapp.com)
+which is connected to an Elasticsearch server with a small set of sample
+BLAST results.
 
 ## Similar work
 
-* https://github.com/daler/gffutils:
+* [gffutils](https://github.com/daler/gffutils) project:
   "GFF and GTF files are loaded into SQLite3 databases,
   allowing much more complex manipulation of hierarchical features
   (e.g., genes, transcripts, and exons) than is possible with plain-text methods
@@ -178,15 +224,6 @@ result files reach to a level of maturity.
  by the developer of the 'pybam' library which we use for indexing BAM files
  
  * https://www.monetdb.org/Documentation/Extensions/LifeScience/load 
-
-## Notes
-
-In a separate repository we develop web interfaces for the indexed results,
-[hspsdb-webcode](https://github.com/uludag/hspsdb-webcode).
-Latest version of the web interface for BLAST results in xml/json outputs
-can be seen on a [test server](http://hspsdb-test.herokuapp.com)
-which is connected to an Elasticsearch server with a small set of sample
-BLAST results.
 
 ## Copyright
 
