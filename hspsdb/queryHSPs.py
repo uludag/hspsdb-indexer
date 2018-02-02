@@ -20,9 +20,9 @@ log = logging.getLogger(__name__)
 
 class QueryHSPs():
 
-    def _topmatches_qc(self, bitscore=128, mismatch=1):
-        qc = {"bitscore": {"$gt": bitscore},
-              "mismatch": {"$lt": mismatch}
+    def _topmatches_qc(self, bitscore, mismatch):
+        qc = {"bitscore": {"$gte": bitscore},
+              "mismatch": {"$lte": mismatch}
               }
         return qc
 
@@ -35,8 +35,7 @@ class QueryHSPs():
         return True if '_' in id else False
 
 
-    def _topmatches_linked2uniprot_qc(self, collection, bitscore=128,
-                                      mismatch=1):
+    def _topmatches_linked2uniprot_qc(self, collection, bitscore, mismatch):
         qc = self._topmatches_qc(bitscore, mismatch)
         lookupfield = '_id' if self._is_id_name(collection) else 'accession'
         aggqc = [
@@ -50,9 +49,8 @@ class QueryHSPs():
         ]
         return aggqc
 
-    def topmatches_linked2UniProt(self, collection,
-                                  bitscore=128, mismatch=1,
-                                  limit=100):
+    def topmatches_linked2UniProt(self, collection, bitscore,
+                                  mismatch, limit):
         aggqc = self._topmatches_linked2uniprot_qc(collection, bitscore,
                                                    mismatch)
         aggqc += [
@@ -116,19 +114,18 @@ class QueryHSPs():
 
 
 @arg('study', help='Name of the MongoDB collection for HSPs of a study')
-@arg('--outfile', help='File name for the pivot table to be generated')
+@arg('outfile', help='Name for the pivot table html file to be generated')
 @arg('--bitscore', help='Minimum bitscore of HSPs')
 @arg('--mismatch', help='Maximum mismatch in HSPs')
-@arg('--limit', help='Limit for the aggreagted results')
-def topgenes(study, outfile=None, bitscore=100, mismatch=1, limit=2600,
+@arg('--limit', help='Maximum number of the groups in the aggreagted results')
+@arg('--rows', help='Default rows for the output pivot table')
+def topgenes(study, outfile, bitscore=100, mismatch=1, limit=4000,
              rows='GO term, Gene'):
     """
     Abundance of HSPs grouped by organisms, genes, and GO annotations.
     Query results are saved in a json file and as PivotTable.js html files
     """
     qry = QueryHSPs()
-    if outfile == None:
-        outfile = study
     r = qry.topmatches_linked2UniProt(study, bitscore, mismatch, limit)
     rows = [r.strip() for r in rows.split(",")]
     qry.save_topmatches_linked2UniProt(r, outfile, rows)
