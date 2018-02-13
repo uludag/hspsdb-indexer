@@ -13,7 +13,7 @@ For this we first worked with Java [HTSJDK](https://github.com/samtools/htsjdk) 
 Later we found pybam and pysam libraries as alternatives for reading SAM/BAM
 files and have started adding Python code to the project.
 For this reason project is not a pure Java or Python project,
-and have project files for both languages; _pom.xml_, _setup.py.
+and have project files for both languages; _pom.xml_, _setup.py_.
 
 During early stages of the project we also implemented Node.js client scripts
 for EMBL-EBI and NCBI, BLAST services; [ebi-sss-client.js](scripts/ebi-sss-client.js),
@@ -39,11 +39,10 @@ git clone https://bitbucket.org/hspsdb/hspsdb-indexer.git ./hspsdb
 - [nosqlbiosets](https://bitbucket.org/hspsdb/nosql-biosets) project,
   for connecting search results with UniProt entries
 
-  Local UniProt MongoDB index with nosql-biosets project, 
+  Local UniProt MongoDB index with nosqlbiosets project, 
   requires 5GB MongoDB space
   
-  Download nosqlbiosets project source code and
-  install required Python libraries:
+  Download project source code and install required Python libraries:
 
     ```bash
     git clone https://bitbucket.org/hspsdb/nosql-biosets.git ./nosqlbiosets
@@ -117,7 +116,7 @@ two samples
 ## Querying
 
 * [queryHSPs.py](./hspsdb/queryHSPs.py): Query indexed similarity search results,
-  find most abundant genes and present them using PivotTable.js
+  find most abundant genes and present them using [PivotTable.js](https://pivottable.js.org/)
   
    ```bash
     ./hspsdb/queryHSPs.py topgenes --help
@@ -180,31 +179,30 @@ Following steps describe how to index BLAST result files in json format.
   [index.sh](scripts/index.sh)
   or [index-folder.sh](scripts/files2index.sh) scripts
   to index your output files.
-  If you do not have any BLAST results in json format and if you first want to
+  If you do not have BLAST results in json format and if you first want to
   see how HSPs-db is working,
   then you can use the sample results we have in the testdb folder.
   Call [files2index.sh](scripts/files2index.sh) script with argument `./testdb`
   followed by the index name you choose earlier, and the URL of your Elasticsearch
   server.
-  If you already have outputs in BLAST archive format you can use
+  If you already have outputs in BLAST *archive* format you can use
   `blast_formatter` command to regenerate your outputs in json format.
-  We want to implement scripts that maps existing XML outputs to json format
+  We want to implement support for outputs in xml format
   but this has not been done yet
-
-* After you indexed your BLAST results you can install
- [HSPs-db web interface](https://github.com/uludag/hspsdb-webcode)
-  for querying and visualizing indexed BLAST results
 
 * For new BLAST searches it is best to produce outputs first in BLAST archive format
   then use `blast_formatter` to generate the outputs you normally read
   and the json output for indexing
 
-In a separate repository we develop web interfaces for the indexed results,
-[hspsdb-webcode](https://github.com/uludag/hspsdb-webcode).
-Latest version of the web interface for BLAST results in xml/json outputs
-can be seen on a [test server](http://hspsdb-test.herokuapp.com)
-which is connected to an Elasticsearch server with a small set of sample
-BLAST results.
+* After indexing your BLAST results you can install
+  [HSPs-db web interface](https://github.com/uludag/hspsdb-webcode)
+  for querying and visualizing indexed BLAST results. We have not been able to
+  write a command-line or Python query API yet.
+  
+  Latest version of the web interface for BLAST results in json format
+  can be seen on a [test server](http://hspsdb-test.herokuapp.com)
+  which is connected to an Elasticsearch server with a small set of sample
+  BLAST results
 
 ## Projects that inspire us
 
@@ -212,20 +210,17 @@ BLAST results.
   "GFF and GTF files are loaded into SQLite3 databases,
   allowing much more complex manipulation of hierarchical features
   (e.g., genes, transcripts, and exons) than is possible with plain-text methods
-  alone"
-  
-  _nosql-biosets project doesn't yet have a level of maturity comparable
-   to the gffutils library_.
+  alone" 
 
 * We can say we want to achieve what the [MultiQC](http://multiqc.info) project
   has already achieved; "A modular tool to aggregate results from bioinformatics
-  analyses across many samples into a single report", _with more dynamic reports_.
+  analyses across many samples into a single report", _with more dynamic reports_
 
 * We can also say HSPs-db project has some similarity to the
  [SeQC](https://github.com/JohnLonginotto/SeQC) project whic is maintained
- by the developer of the 'pybam' library which we use for indexing BAM files
+ by the developer of the 'pybam' library
  
- * https://www.monetdb.org/Documentation/Extensions/LifeScience/load 
+ * https://www.monetdb.org/bam
 
 ## Copyright
 
