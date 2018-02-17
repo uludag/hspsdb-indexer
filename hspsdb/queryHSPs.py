@@ -2,7 +2,7 @@
 """ Query MongoDB indexed HSPs, save results in PivotTable.js html files.
  Current version supports search results against UniProt sequences only
  """
-
+from __future__ import division
 import json
 
 import argh
@@ -12,6 +12,7 @@ from nosqlbiosets.dbutils import DBconnection
 from nosqlbiosets.uniprot.query import QueryUniProt
 from pivottablejs import pivot_ui
 import logging
+
 
 INDEX = "biosets"
 qryuniprot = QueryUniProt("MongoDB", INDEX, "uniprot")
@@ -54,6 +55,8 @@ class QueryHSPs():
         aggqc = self._topmatches_linked2uniprot_qc(collection, bitscore,
                                                    mismatch)
         aggqc += [
+            {"$project": {"uniprot.gene":1, "uniprot.dbReference": 1,
+                          "uniprot.organism": 1}},
             {"$unwind": "$uniprot"},
             {"$unwind": "$uniprot.gene"},
             {"$unwind": "$uniprot.gene.name"},
@@ -79,6 +82,7 @@ class QueryHSPs():
         cr = mdbc.mdbi[collection].aggregate(aggqc, allowDiskUse=True)
         log.info('topmatches_linked2UniProt query returned')
         r = []
+        nsamples = {}
         for i in cr:
             goterm = i['_id']['goannot']['value'][2:]
             goclass = i['_id']['goannot']['value'][:1]
@@ -95,6 +99,15 @@ class QueryHSPs():
             bitscore = i['bitscore']
             r.append((sample, organism, goclass, goterm, gene,
                       abundance, bitscore))
+            if sample in nsamples:
+                nsamples[sample] += 1
+            else:
+                nsamples[sample] = 1
+        print(nsamples)
+        n = sum(nsamples.values())
+        r = [row +
+             (row[5] * n // nsamples[row[0]],)
+             for row in r]
         return r
 
     @staticmethod
@@ -103,13 +116,17 @@ class QueryHSPs():
         json.dump(r, open(outfile+'.json', 'w'), indent=4)
         df = pd.DataFrame(r,
                           columns=['Sample', 'Organism', 'GO group', 'GO term',
-                                   'Gene', 'Abundance', 'Bitscore'])
-        outfile += '.html'
+                                   'Gene', 'Abundance', 'Bitscore',
+                                   'Normalized abundance'])
+        if not outfile.endswith('.html'):
+            outfile += '.html'
         pivot_ui(df, outfile_path=outfile,
                  rows=rows,
                  cols=['Sample'],
-                 rendererName="Heatmap", aggregatorName="Sum",
-                 vals=["Abundance"])
+                 rendererName="Heatmap",
+                 aggregatorName="Integer Sum",
+                 rowOrder='value_z_to_a',
+                 vals=["Normalized abundance"])
         print('Pivot table of query results saved in '+ outfile)
 
 
@@ -117,10 +134,10 @@ class QueryHSPs():
 @arg('outfile', help='Name for the pivot table html file to be generated')
 @arg('--bitscore', help='Minimum bitscore of HSPs')
 @arg('--mismatch', help='Maximum mismatch in HSPs')
-@arg('--limit', help='Maximum number of the groups in the aggreagted results')
+@arg('--limit', help='Maximum number of groups in the aggreagted results')
 @arg('--rows', help='Default rows for the output pivot table')
-def topgenes(study, outfile, bitscore=100, mismatch=1, limit=4000,
-             rows='GO term, Gene'):
+def topgenes(study, outfile, bitscore=100, mismatch=1, limit=14000,
+             rows='Gene'):
     """
     Abundance of HSPs grouped by organisms, genes, and GO annotations.
     Query results are saved in a json file and as PivotTable.js html files
